@@ -1,0 +1,37 @@
+group 'com.yerti.vanillaplus'
+version '1.0-SNAPSHOT'
+
+apply plugin: "java"
+
+
+repositories {
+    mavenCentral()
+    jcenter()
+    mavenLocal()
+
+    flatDir {
+        dirs 'src/main/java/resources'
+    }
+
+    maven {
+        url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+    }
+}
+
+version = "0.1"
+sourceCompatibility = "1.6"
+targetCompatibility = "1.6"
+
+configurations {
+    shade
+    compile.extendsFrom shade
+}
+
+
+jar.destinationDir = file("C:\\Users\\chess\\Desktop\\Spigot 1.8\\plugins")
+// Use the shade configuration to include the dependency's class files in your final JAR
+
+dependencies {
+    compileOnly "org.bukkit:craftbukkit:1.8.8-R0.1-SNAPSHOT"
+    compile files('./src/main/resources/HolographicDisplays.jar')
+}

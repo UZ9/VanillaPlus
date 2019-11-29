@@ -1,0 +1,7 @@
+name: VanillaPlus
+main: com.yerti.vanillaplus.VanillaPlus
+version: 0.1
+author: Yerti
+softdepend: [HolographicDisplays]
+description: >
+  Vanilla Applied Energistics 2 Minecraft
