@@ -1,6 +1,6 @@
 package com.yerti.vanillaplus.structures.crafting;
 
-import com.yerti.vanillaplus.utils.inventory.CustomItemStack;
+import com.yerti.vanillaplus.core.items.CustomItemStack;
 
 public class CraftingUtils {
 

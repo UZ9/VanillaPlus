@@ -114,6 +114,25 @@ public class CustomItemStack extends ItemStack {
         return this;
     }
 
+    public CustomItemStack addFlag(ItemFlag flag) {
+        ItemMeta meta = getItemMeta();
+        meta.addItemFlags(flag);
+        setItemMeta(meta);
+        return this;
+    }
+
+    public CustomItemStack enchant(Enchantment enchantment, int level) {
+        ItemMeta meta = getItemMeta();
+        meta.addEnchant(enchantment, level, true);
+        setItemMeta(meta);
+        return this;
+    }
+
+    public CustomItemStack damage(int damage) {
+        setDurability((short) damage);
+        return this;
+    }
+
 
 
 

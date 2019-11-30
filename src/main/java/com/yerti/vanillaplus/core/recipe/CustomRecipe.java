@@ -10,12 +10,12 @@ public class CustomRecipe {
 
     private ShapedRecipe recipe;
     //Output, Matrix Input
-    private static Map<ItemStack, ItemStack[]> matrixMap;
+    private Map<Character, ItemStack> matrixKey = new HashMap<>();
+    private static Map<ItemStack, ItemStack[]> matrixMap = new HashMap<>();
 
 
 
     public CustomRecipe(ItemStack output) {
-        matrixMap = new HashMap<>();
         recipe = new ShapedRecipe(output);
     }
 
@@ -25,21 +25,30 @@ public class CustomRecipe {
 
     public void setIngredient(char key, ItemStack ingredient) {
         recipe.setIngredient(key, ingredient.getType());
+        matrixKey.put(key, ingredient);
     }
 
-    public void build() {
+    public ShapedRecipe build() {
         ItemStack[] matrix = new ItemStack[9];
 
         int index = 0;
 
         for (String string : recipe.getShape()) {
             for (char c : string.toCharArray()) {
-                matrix[index] = recipe.getIngredientMap().get(c);
+                matrix[index] = matrixKey.get(c);
                 index++;
             }
         }
 
         matrixMap.put(recipe.getResult(), matrix);
+
+        System.out.println("Adding recipe" + recipe.getResult().getItemMeta().getDisplayName());
+        for (ItemStack stack : matrix) {
+            System.out.println(stack.getType());
+        }
+
+
+        return recipe;
 
 
     }

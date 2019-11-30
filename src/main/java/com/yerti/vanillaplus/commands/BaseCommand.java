@@ -2,9 +2,9 @@ package com.yerti.vanillaplus.commands;
 
 import com.yerti.vanillaplus.core.command.CustomCommand;
 import com.yerti.vanillaplus.core.command.SubCommand;
+import com.yerti.vanillaplus.core.items.CustomItemStack;
 import com.yerti.vanillaplus.core.items.ItemMetaData;
 import com.yerti.vanillaplus.utils.config.Messages;
-import com.yerti.vanillaplus.utils.inventory.CustomItemStack;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -30,7 +30,7 @@ public class BaseCommand {
     public void wrenchSub(CommandSender executor, Command command, String[] args) {
         if (!(executor instanceof Player)) return;
 
-        ItemStack stack = new CustomItemStack(Material.GOLD_HOE, ChatColor.translateAlternateColorCodes('&', Messages.config.getTranslation("wrench-name")), 1).getStack();
+        ItemStack stack = new CustomItemStack(Material.GOLD_HOE, 1).name(ChatColor.translateAlternateColorCodes('&', Messages.config.getTranslation("wrench-name")));
 
         stack = ItemMetaData.setMetadata(stack, "current-setting", 0);
 

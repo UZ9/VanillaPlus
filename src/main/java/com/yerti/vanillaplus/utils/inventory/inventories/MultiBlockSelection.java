@@ -1,6 +1,6 @@
 package com.yerti.vanillaplus.utils.inventory.inventories;
 
-import com.yerti.vanillaplus.utils.inventory.CustomItemStack;
+import com.yerti.vanillaplus.core.items.CustomItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -19,7 +19,7 @@ public class MultiBlockSelection {
     }
 
     public void addItems() {
-        inventory.addItem(new CustomItemStack(Material.WORKBENCH, ChatColor.GOLD + "Work Station", 3, ChatColor.GRAY + "Used to craft several different items.").getStack());
+        //inventory.addItem(new CustomItemStack(Material.WORKBENCH, ChatColor.GOLD + "Work Station", 3, ChatColor.GRAY + "Used to craft several different items.").getStack());
     }
 
     public void openInventory(Player player) {

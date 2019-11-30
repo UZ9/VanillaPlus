@@ -1,12 +1,12 @@
 package com.yerti.vanillaplus.events.inventory;
 
+import com.yerti.vanillaplus.core.items.CustomItemStack;
 import com.yerti.vanillaplus.core.items.ItemMetaData;
 import com.yerti.vanillaplus.structures.Structure;
 import com.yerti.vanillaplus.structures.generators.CoalGenerator;
 import com.yerti.vanillaplus.utils.BlockUpdater;
 import com.yerti.vanillaplus.utils.ChatManager;
 import com.yerti.vanillaplus.utils.config.Messages;
-import com.yerti.vanillaplus.utils.inventory.CustomItemStack;
 import com.yerti.vanillaplus.utils.inventory.inventories.MultiBlockSelection;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -81,7 +81,7 @@ public class WrenchInteract implements Listener {
             }
         } else if (e.getAction().equals(Action.LEFT_CLICK_AIR) || e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             System.out.println(1);
-            ItemStack stack = new CustomItemStack(Material.GOLD_HOE, ChatColor.translateAlternateColorCodes('&', Messages.config.getTranslation("wrench-name")), 1).getStack();
+            ItemStack stack = new CustomItemStack(Material.GOLD_HOE, 1).name(ChatColor.translateAlternateColorCodes('&', Messages.config.getTranslation("wrench-name")));
 
 
             if (e.getItem() == null || e.getItem().getType().equals(Material.AIR)) return;
