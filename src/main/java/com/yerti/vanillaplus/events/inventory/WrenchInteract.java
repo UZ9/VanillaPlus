@@ -4,6 +4,7 @@ import com.yerti.core.items.ItemMetaData;
 import com.yerti.vanillaplus.structures.Structure;
 import com.yerti.vanillaplus.structures.generators.CoalGenerator;
 import com.yerti.vanillaplus.utils.BlockUpdater;
+import com.yerti.vanillaplus.utils.ChatManager;
 import com.yerti.vanillaplus.utils.Utils;
 import com.yerti.vanillaplus.utils.config.Messages;
 import com.yerti.vanillaplus.utils.inventory.CustomItemStack;
@@ -53,12 +54,22 @@ public class WrenchInteract implements Listener {
 
                         if (BlockUpdater.machines.containsKey(e.getClickedBlock().getLocation())) return;
 
-                        new CoalGenerator(e.getClickedBlock().getLocation());//.create();
+
+                        short integer = (short) ItemMetaData.getMetadata(e.getItem(), "current-setting");
+
+                        if (integer == 0) {
+                            new CoalGenerator(e.getClickedBlock().getLocation());//.create()
+                            e.getPlayer().sendMessage(ChatColor.GREEN + "Successfully created a Coal Generator!");// ;
+                        } else {
+
+                        }
+
+
 
 
 
                         e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ANVIL_LAND, 10, 2);
-                        e.getPlayer().sendMessage(ChatColor.GREEN + "Successfully created a Coal Generator!");
+
 
 
 
@@ -72,26 +83,31 @@ public class WrenchInteract implements Listener {
 
                 }
             }
-        } else if (e.getAction().equals(Action.LEFT_CLICK_AIR)) {
+        } else if (e.getAction().equals(Action.LEFT_CLICK_AIR) || e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+            System.out.println(1);
             ItemStack stack = new CustomItemStack(Material.GOLD_HOE, ChatColor.translateAlternateColorCodes('&', Messages.config.getTranslation("wrench-name")), 1).getStack();
 
 
             if (e.getItem() == null || e.getItem().getType().equals(Material.AIR)) return;
+            if (e.getItem().getItemMeta() == null) return;
 
-            if (stack.equals(e.getItem())) {
-                Integer integer = (Integer) ItemMetaData.getMetadata(e.getItem(), "current-setting");
+            System.out.println(2);
+            if (stack.getItemMeta().getDisplayName().equals(e.getItem().getItemMeta().getDisplayName()) && ItemMetaData.hasMetadata(e.getItem(), "current-setting")) {
+                short integer = (short) ItemMetaData.getMetadata(e.getItem(), "current-setting");
                 integer++;
-                if (integer > 2) integer = 0;
+                System.out.println(3);
+                if (integer >= 2) integer = 0;
 
                 switch (integer) {
                     case 0:
-
+                        ChatManager.info(e.getPlayer(), "Switched to Coal Generator");
                         break;
                     case 1:
-                        break;
-                    case 2:
+                        ChatManager.info(e.getPlayer(), "Switched to Lava Generator");
                         break;
                 }
+
+                System.out.println(4);
 
                 e.getPlayer().setItemInHand(ItemMetaData.setMetadata(e.getItem(), "current-setting", integer));
 

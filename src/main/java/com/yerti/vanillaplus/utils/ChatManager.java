@@ -27,7 +27,7 @@ public class ChatManager {
     }
 
     private static String getPrefix() {
-        return ChatColor.translateAlternateColorCodes('&', "&7[&eIndustrialized&7] &7\u00BB ");
+        return ChatColor.translateAlternateColorCodes('&', "&7[&eIndustrialized&7]");
     }
 
 

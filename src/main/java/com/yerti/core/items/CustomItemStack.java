@@ -102,6 +102,13 @@ public class CustomItemStack extends ItemStack {
         return this;
     }
 
+    public CustomItemStack name(String text) {
+        ItemMeta meta = getItemMeta();
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', text));
+        setItemMeta(meta);
+        return this;
+    }
+
     /**
      * Retrieves the displayname of the CustomItemStack
      * @return
