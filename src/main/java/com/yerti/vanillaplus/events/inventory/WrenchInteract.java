@@ -1,5 +1,6 @@
 package com.yerti.vanillaplus.events.inventory;
 
+import com.yerti.core.items.ItemMetaData;
 import com.yerti.vanillaplus.structures.Structure;
 import com.yerti.vanillaplus.structures.generators.CoalGenerator;
 import com.yerti.vanillaplus.utils.BlockUpdater;
@@ -10,11 +11,15 @@ import com.yerti.vanillaplus.utils.inventory.inventories.MultiBlockSelection;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Furnace;
+import org.bukkit.craftbukkit.v1_8_R3.block.CraftFurnace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
 
 public class WrenchInteract implements Listener {
@@ -35,7 +40,6 @@ public class WrenchInteract implements Listener {
             //Check for wrench
             if (e.getPlayer().getInventory().getItemInHand().getType().equals(Material.GOLD_HOE)) {
 
-                e.getPlayer().getInventory().addItem(new CustomItemStack(Material.GOLD_HOE, ChatColor.translateAlternateColorCodes('&', Messages.config.getTranslation("wrench-name")), 1).getStack());
 
                 if (!e.getPlayer().getInventory().getItemInHand().hasItemMeta()) return;
 
@@ -47,16 +51,15 @@ public class WrenchInteract implements Listener {
 
                     if (e.getClickedBlock().getType().equals(Material.FURNACE)) {
 
-                        CoalGenerator cg = new CoalGenerator(e.getClickedBlock().getLocation());
+                        if (BlockUpdater.machines.containsKey(e.getClickedBlock().getLocation())) return;
 
-                        if (Utils.checkMachine("coalGenerators", e.getClickedBlock().getLocation())) return;
-                        else {
+                        new CoalGenerator(e.getClickedBlock().getLocation());//.create();
 
-                            e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ANVIL_LAND, 10, 2);
-                            e.getPlayer().sendMessage(ChatColor.GREEN + "Successfully created a Coal Generator!");
-                            cg.create();
 
-                        }
+
+                        e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ANVIL_LAND, 10, 2);
+                        e.getPlayer().sendMessage(ChatColor.GREEN + "Successfully created a Coal Generator!");
+
 
 
                     }
@@ -69,6 +72,31 @@ public class WrenchInteract implements Listener {
 
                 }
             }
+        } else if (e.getAction().equals(Action.LEFT_CLICK_AIR)) {
+            ItemStack stack = new CustomItemStack(Material.GOLD_HOE, ChatColor.translateAlternateColorCodes('&', Messages.config.getTranslation("wrench-name")), 1).getStack();
+
+
+            if (e.getItem() == null || e.getItem().getType().equals(Material.AIR)) return;
+
+            if (stack.equals(e.getItem())) {
+                Integer integer = (Integer) ItemMetaData.getMetadata(e.getItem(), "current-setting");
+                integer++;
+                if (integer > 2) integer = 0;
+
+                switch (integer) {
+                    case 0:
+
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                }
+
+                e.getPlayer().setItemInHand(ItemMetaData.setMetadata(e.getItem(), "current-setting", integer));
+
+
+            }
         }
 
 
@@ -78,7 +106,7 @@ public class WrenchInteract implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
 
-        if (e.getBlock().getType().equals(Material.FURNACE)) {
+        if (e.getBlock().getType().equals(Material.FURNACE) || e.getBlock().getType().equals(Material.BURNING_FURNACE)) {
             if (BlockUpdater.machines.containsKey(e.getBlock().getLocation())) {
                 Structure structure = BlockUpdater.machines.get(e.getBlock().getLocation());
                 structure.destroy();

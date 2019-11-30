@@ -24,7 +24,7 @@ public class BukkitCommand {
         this.aliases = aliases;
         this.method = method;
         this.executor = exector;
-        this.subCommands = new ArrayList<>();
+        this.subCommands = new ArrayList<BukkitCommand>();
     }
 
     public void addSubCommand(BukkitCommand command) {

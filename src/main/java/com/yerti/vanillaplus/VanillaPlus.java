@@ -1,8 +1,13 @@
 package com.yerti.vanillaplus;
 
+import com.yerti.core.YertiPlugin;
+import com.yerti.core.entity.ModelProtection;
+import com.yerti.vanillaplus.commands.BaseCommand;
 import com.yerti.vanillaplus.events.inventory.FurnacePrevention;
 import com.yerti.vanillaplus.events.inventory.WrenchInteract;
+import com.yerti.vanillaplus.structures.Structure;
 import com.yerti.vanillaplus.utils.BlockUpdater;
+import com.yerti.vanillaplus.utils.Utils;
 import com.yerti.vanillaplus.utils.config.Config;
 import com.yerti.vanillaplus.utils.config.GeneratorList;
 import com.yerti.vanillaplus.utils.config.Messages;
@@ -10,7 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-public class VanillaPlus extends JavaPlugin {
+public class VanillaPlus extends YertiPlugin {
 
     public static GeneratorList customConfig;
     public static File customConfigFile;
@@ -18,6 +23,10 @@ public class VanillaPlus extends JavaPlugin {
     public static VanillaPlus instance;
 
     public void onEnable() {
+
+
+        Bukkit.getServer().getPluginManager().registerEvents(new ModelProtection(), this);
+        load(BaseCommand.class);
 
         instance = this;
 
@@ -61,6 +70,13 @@ public class VanillaPlus extends JavaPlugin {
         bu.gameLoop();
 
 
+    }
+
+    @Override
+    public void onDisable() {
+        for (Structure structure : BlockUpdater.machines.values()) {
+            Utils.updateMachineConfig(structure.getType(), structure.getMachineID(), structure.getEnergy());
+        }
     }
 
 

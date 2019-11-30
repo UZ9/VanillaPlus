@@ -37,12 +37,12 @@ public class Utils {
      * @param maxVU
      */
     public static void generateMachineConfig(String machineType, String machineID, Location loc, int maxVU) {
-        config.set(machineType + "." + machineID + ".x", loc.getBlockX());
-        config.set(machineType + "." + machineID + ".y", loc.getBlockY());
-        config.set(machineType + "." + machineID + ".z", loc.getBlockZ());
-        config.set(machineType + "." + machineID + ".world", loc.getWorld().getName());
-        config.set(machineType + "." + machineID + ".VU", 0);
-        config.set(machineType + "." + machineID + ".maxVU", maxVU);
+        config.set("generators." + machineType + "." + machineID + ".x", loc.getBlockX());
+        config.set("generators." + machineType + "." + machineID + ".y", loc.getBlockY());
+        config.set("generators." + machineType + "." + machineID + ".z", loc.getBlockZ());
+        config.set("generators." + machineType + "." + machineID + ".world", loc.getWorld().getName());
+        config.set("generators." + machineType + "." + machineID + ".VU", 0);
+        config.set("generators." + machineType + "." + machineID + ".maxVU", maxVU);
 
         try {
             config.save(VanillaPlus.customConfigFile);
@@ -55,13 +55,11 @@ public class Utils {
     public static void removeMachineConfig(String machineType, String machineID) {
         List<String> list = config.getStringList(machineType);
 
-        for (String machineIDs : config.getConfigurationSection(machineType).getKeys(false)) {
-            list.add(machineIDs);
-        }
+        list.addAll(config.getConfigurationSection("generators." + machineType).getKeys(false));
 
         list.remove(machineID);
-        config.set(machineType, list);
-        config.set(machineType + "." + machineID, null);
+        config.set("generators." + machineType, list);
+        config.set("generators." + machineType + "." + machineID, null);
 
         try {
             config.save(VanillaPlus.customConfigFile);
@@ -72,7 +70,13 @@ public class Utils {
 
     //TODO: Add to BlockUpdater
     public static void updateMachineConfig(String machineType, String machineID, int voxelUnits) {
-        config.set(machineType + "." + machineID + ".VU", voxelUnits);
+        config.set("generators." + machineType + "." + machineID + ".VU", voxelUnits);
+
+        try {
+            config.save(VanillaPlus.customConfigFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static boolean checkMachine(String machineType, Location loc) {

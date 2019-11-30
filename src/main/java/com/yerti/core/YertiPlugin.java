@@ -2,6 +2,8 @@ package com.yerti.core;
 
 
 import com.yerti.core.command.CommandFramework;
+import com.yerti.core.entity.ModelProtection;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -15,6 +17,11 @@ public class YertiPlugin extends JavaPlugin {
      */
     protected void load(Class<?> commandClass) {
         new CommandFramework(this, commandClass);
+        getServer().getPluginManager().registerEvents(new ModelProtection(), this);
+    }
+
+    protected void load() {
+        getServer().getPluginManager().registerEvents(new ModelProtection(), this);
     }
 
 }

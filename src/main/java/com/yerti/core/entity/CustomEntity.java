@@ -3,7 +3,8 @@ package com.yerti.core.entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
-import org.jetbrains.annotations.Nullable;
+
+import javax.annotation.Nullable;
 
 
 /**

@@ -25,9 +25,7 @@ public class GeneratorList {
         this.pl = pl;
         try {
             createCustomConfig();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InvalidConfigurationException e) {
+        } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
     }
@@ -43,8 +41,8 @@ public class GeneratorList {
         customConfig.load(customConfigFile);
     }
 
-    public String getMachineStats(String machineType, String machineID) {
-        return machineType + "." + machineID + ".";
+    private String getMachineStats(String machineType, String machineID) {
+        return "generators." + machineType + "." + machineID + ".";
     }
 
     public Location getLocationFromConfig(String machineType, String machineID) {
