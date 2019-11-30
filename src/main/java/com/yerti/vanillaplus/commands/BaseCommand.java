@@ -1,20 +1,18 @@
 package com.yerti.vanillaplus.commands;
 
-import com.yerti.core.command.CustomCommand;
-import com.yerti.core.command.SubCommand;
-import com.yerti.core.items.ItemMetaData;
+import com.yerti.vanillaplus.core.command.CustomCommand;
+import com.yerti.vanillaplus.core.command.SubCommand;
+import com.yerti.vanillaplus.core.items.ItemMetaData;
 import com.yerti.vanillaplus.utils.config.Messages;
 import com.yerti.vanillaplus.utils.inventory.CustomItemStack;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class BaseCommand {
 

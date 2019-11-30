@@ -1,9 +1,9 @@
 package com.yerti.vanillaplus;
 
-import com.yerti.core.YertiPlugin;
-import com.yerti.core.entity.ModelProtection;
-import com.yerti.core.items.CustomItemStack;
-import com.yerti.core.recipe.CustomRecipe;
+import com.yerti.vanillaplus.core.YertiPlugin;
+import com.yerti.vanillaplus.core.entity.ModelProtection;
+import com.yerti.vanillaplus.core.items.CustomItemStack;
+import com.yerti.vanillaplus.core.recipe.CustomRecipe;
 import com.yerti.vanillaplus.commands.BaseCommand;
 import com.yerti.vanillaplus.events.inventory.FurnacePrevention;
 import com.yerti.vanillaplus.events.inventory.WrenchInteract;
@@ -15,9 +15,7 @@ import com.yerti.vanillaplus.utils.config.GeneratorList;
 import com.yerti.vanillaplus.utils.config.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.plugin.java.JavaPlugin;
+
 
 import java.io.File;
 public class VanillaPlus extends YertiPlugin {
@@ -66,24 +64,25 @@ public class VanillaPlus extends YertiPlugin {
 
         //im sorry it's 3 am and i dont have the strength for a delay timer
         //TODO: change this badness
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            CustomRecipe genCore = new CustomRecipe(new CustomItemStack(Material.FIREWORK_CHARGE, 1).name("&eGenerator Core").lore("&cCrafting component for generators"));
+            genCore.shape("%%%", "%@%", "%%%");
+            genCore.build();
 
-        CustomRecipe genCore = new CustomRecipe(new CustomItemStack(Material.FIREWORK_CHARGE, 1).name("&eGenerator Core").lore("&cCrafting component for generators"));
-        genCore.shape("%%%", "%@%", "%%%");
-        genCore.build();
-
-        CustomRecipe coalGen = new CustomRecipe(new CustomItemStack(Material.FURNACE, 1).name("&eCoal Generator").lore("&cConsumes &fcoal&c to produce VU"));
-        coalGen.shape("%%%", "%@%", "%%%");
-        coalGen.build();
+            CustomRecipe coalGen = new CustomRecipe(new CustomItemStack(Material.FURNACE, 1).name("&eCoal Generator").lore("&cConsumes &fcoal&c to produce VU"));
+            coalGen.shape("%%%", "%@%", "%%%");
+            coalGen.build();
 
 
 
-        //Main update loop
-        bu.gameLoop();
+            //Main update loop
+            bu.gameLoop();
+
+
+        }, 200L);
+
+
+
 
 
     }

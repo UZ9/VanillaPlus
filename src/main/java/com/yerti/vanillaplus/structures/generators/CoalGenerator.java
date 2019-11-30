@@ -1,8 +1,8 @@
 package com.yerti.vanillaplus.structures.generators;
 
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import com.yerti.core.entity.CustomModel;
-import com.yerti.core.entity.CustomModelPart;
+import com.yerti.vanillaplus.core.entity.CustomModel;
+import com.yerti.vanillaplus.core.entity.CustomModelPart;
 import com.yerti.vanillaplus.VanillaPlus;
 import com.yerti.vanillaplus.structures.Structure;
 import com.yerti.vanillaplus.utils.BlockUpdater;

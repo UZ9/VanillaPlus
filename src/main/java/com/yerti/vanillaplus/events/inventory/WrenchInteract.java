@@ -1,26 +1,22 @@
 package com.yerti.vanillaplus.events.inventory;
 
-import com.yerti.core.items.ItemMetaData;
+import com.yerti.vanillaplus.core.items.ItemMetaData;
 import com.yerti.vanillaplus.structures.Structure;
 import com.yerti.vanillaplus.structures.generators.CoalGenerator;
 import com.yerti.vanillaplus.utils.BlockUpdater;
 import com.yerti.vanillaplus.utils.ChatManager;
-import com.yerti.vanillaplus.utils.Utils;
 import com.yerti.vanillaplus.utils.config.Messages;
 import com.yerti.vanillaplus.utils.inventory.CustomItemStack;
 import com.yerti.vanillaplus.utils.inventory.inventories.MultiBlockSelection;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.block.Furnace;
-import org.bukkit.craftbukkit.v1_8_R3.block.CraftFurnace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
 
 public class WrenchInteract implements Listener {
