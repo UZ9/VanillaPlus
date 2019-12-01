@@ -38,7 +38,6 @@ public class CustomRecipeHandler implements Listener {
 
 
                     if (!inventory.getMatrix()[i].getItemMeta().equals(entry.getValue()[i].getItemMeta())) {
-                        System.out.println("Found difference");
                         inventory.setResult(null);
                         return;
                     }

@@ -42,11 +42,6 @@ public class CustomRecipe {
 
         matrixMap.put(recipe.getResult(), matrix);
 
-        System.out.println("Adding recipe" + recipe.getResult().getItemMeta().getDisplayName());
-        for (ItemStack stack : matrix) {
-            System.out.println(stack.getType());
-        }
-
 
         return recipe;
 
