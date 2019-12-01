@@ -1,6 +1,5 @@
 package com.yerti.vanillaplus.structures;
 
-import com.yerti.vanillaplus.utils.Utils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

@@ -1,12 +1,25 @@
 package com.yerti.vanillaplus.core.items;
 
+import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
+import com.google.gson.*;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Contains several {@link ItemStack} utilities for ease
  */
 public class ItemStackUtils {
+
+    private static JsonParser parser = new JsonParser();
+    private static Gson gson = new GsonBuilder().create();
+
 
 
     /**
@@ -98,6 +111,73 @@ public class ItemStackUtils {
             default: {
                 return null;
             }
+        }
+    }
+
+    public static JsonObject serializeItemStack(final ItemStack item) {
+        final JsonObject json = new JsonObject();
+        json.addProperty("type", item.getType().name());
+        json.addProperty("data", item.getData().getData());
+        json.addProperty("amount", item.getAmount());
+        json.addProperty("durability", item.getDurability());
+        if (item.getEnchantments().size() > 0) {
+            final JsonObject enchantments = new JsonObject();
+            for (final Map.Entry<Enchantment, Integer> entry : item.getEnchantments().entrySet()) {
+                final Enchantment ench = entry.getKey();
+                final int lvl = entry.getValue();
+                enchantments.addProperty(ench.getName(), lvl);
+            }
+            json.add("enchantments", enchantments);
+        }
+        if (item.hasItemMeta()) {
+            final ItemMeta meta = item.getItemMeta();
+            final JsonObject itemmeta = new JsonObject();
+            if (meta.hasDisplayName()) {
+                itemmeta.addProperty("displayname", meta.getDisplayName());
+            }
+            if (meta.hasLore()) {
+                itemmeta.add("lore", gson.toJsonTree(meta.getLore()));
+            }
+            json.add("itemmeta", itemmeta);
+        }
+        return json;
+    }
+
+    public static ItemStack deserializeItemStack(final String string) {
+        try {
+            final JsonObject json = (JsonObject)parser.parse(string);
+            final Material type = Material.getMaterial(json.get("type").getAsString());
+            final byte data = json.get("data").getAsByte();
+            final int amount = json.get("amount").getAsInt();
+            final short durability = json.get("durability").getAsShort();
+            final ItemStack item = new ItemStack(type, amount, (short)data);
+            item.setDurability(durability);
+            if (json.has("enchantments")) {
+                final JsonObject enchantments = json.getAsJsonObject("enchantments");
+                for (final Map.Entry<String, JsonElement> entry : enchantments.entrySet()) {
+                    item.addUnsafeEnchantment(Enchantment.getByName((String)entry.getKey()), entry.getValue().getAsInt());
+                }
+            }
+            if (json.has("itemmeta")) {
+                final JsonObject itemmeta = json.getAsJsonObject("itemmeta");
+                final ItemMeta meta = item.getItemMeta();
+                if (itemmeta.has("displayname")) {
+                    meta.setDisplayName(itemmeta.get("displayname").getAsString());
+                }
+                if (itemmeta.has("lore")) {
+                    final List<String> lore = new ArrayList<String>();
+                    final Iterator<JsonElement> it = itemmeta.get("lore").getAsJsonArray().iterator();
+                    while (it.hasNext()) {
+                        lore.add(it.next().getAsString());
+                    }
+                    meta.setLore((List)lore);
+                }
+                item.setItemMeta(meta);
+            }
+            return item;
+        }
+        catch (Exception ex) {
+            return null;
         }
     }
 

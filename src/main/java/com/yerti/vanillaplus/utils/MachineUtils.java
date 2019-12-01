@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 
-public class Utils {
+public class MachineUtils {
 
     private static String chars = "abcdefghijklmnopqrstuvwxyz0123456789";
     private static FileConfiguration config = VanillaPlus.customConfig.getCustomConfig();
@@ -75,7 +75,7 @@ public class Utils {
         try {
             config.save(VanillaPlus.customConfigFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("An exception during saving the config happened.");
         }
     }
 

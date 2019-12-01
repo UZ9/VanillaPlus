@@ -11,7 +11,7 @@ import com.yerti.vanillaplus.items.ItemList;
 import com.yerti.vanillaplus.listeners.MachinePlaceListener;
 import com.yerti.vanillaplus.structures.Structure;
 import com.yerti.vanillaplus.utils.BlockUpdater;
-import com.yerti.vanillaplus.utils.Utils;
+import com.yerti.vanillaplus.utils.MachineUtils;
 import com.yerti.vanillaplus.utils.config.Config;
 import com.yerti.vanillaplus.utils.config.GeneratorList;
 import com.yerti.vanillaplus.utils.config.Messages;
@@ -117,7 +117,7 @@ public class VanillaPlus extends YertiPlugin {
     @Override
     public void onDisable() {
         for (Structure structure : BlockUpdater.machines.values()) {
-            Utils.updateMachineConfig(structure.getType(), structure.getMachineID(), structure.getEnergy());
+            MachineUtils.updateMachineConfig(structure.getType(), structure.getMachineID(), structure.getEnergy());
         }
     }
 

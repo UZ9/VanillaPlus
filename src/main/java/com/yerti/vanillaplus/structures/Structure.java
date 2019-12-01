@@ -2,7 +2,7 @@ package com.yerti.vanillaplus.structures;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
-import com.yerti.vanillaplus.utils.Utils;
+import com.yerti.vanillaplus.utils.MachineUtils;
 import org.bukkit.Location;
 
 public abstract class Structure {
@@ -17,10 +17,10 @@ public abstract class Structure {
         this.loc = loc;
         this.type = type;
         this.maxEnergy = maxEnergy;
-        this.machineID = Utils.generateID();
+        this.machineID = MachineUtils.generateID();
 
 
-        Utils.generateMachineConfig(type, machineID, loc, maxEnergy);
+        MachineUtils.generateMachineConfig(type, machineID, loc, maxEnergy);
     }
 
     public Structure(Location loc, String machineID, String type, int maxEnergy, int energy) {

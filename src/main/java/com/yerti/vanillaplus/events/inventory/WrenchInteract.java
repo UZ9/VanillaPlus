@@ -2,6 +2,7 @@ package com.yerti.vanillaplus.events.inventory;
 
 import com.yerti.vanillaplus.core.items.CustomItemStack;
 import com.yerti.vanillaplus.core.items.ItemMetaData;
+import com.yerti.vanillaplus.items.ItemList;
 import com.yerti.vanillaplus.structures.Structure;
 import com.yerti.vanillaplus.structures.generators.CoalGenerator;
 import com.yerti.vanillaplus.utils.BlockUpdater;
@@ -115,19 +116,7 @@ public class WrenchInteract implements Listener {
 
     }
 
-    @EventHandler
-    public void onBlockBreak(BlockBreakEvent e) {
 
-        if (e.getBlock().getType().equals(Material.FURNACE) || e.getBlock().getType().equals(Material.BURNING_FURNACE)) {
-            if (BlockUpdater.machines.containsKey(e.getBlock().getLocation())) {
-                Structure structure = BlockUpdater.machines.get(e.getBlock().getLocation());
-                structure.destroy();
-                e.getPlayer().sendMessage(ChatColor.RED + "Destroyed Furnace Generator.");
-            }
-
-        }
-
-    }
 
 
 }

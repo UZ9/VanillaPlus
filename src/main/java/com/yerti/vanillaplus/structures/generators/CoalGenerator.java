@@ -6,7 +6,7 @@ import com.yerti.vanillaplus.core.entity.CustomModelPart;
 import com.yerti.vanillaplus.VanillaPlus;
 import com.yerti.vanillaplus.structures.Structure;
 import com.yerti.vanillaplus.utils.BlockUpdater;
-import com.yerti.vanillaplus.utils.Utils;
+import com.yerti.vanillaplus.utils.MachineUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -64,7 +64,7 @@ public class CoalGenerator extends Structure {
     public void destroy() {
         getHologram().delete();
         BlockUpdater.machines.remove(getLoc());
-        Utils.removeMachineConfig("coalGenerators", getMachineID());
+        MachineUtils.removeMachineConfig("coalGenerators", getMachineID());
 
         Collection<Entity> entities = getLoc().getWorld().getNearbyEntities(getLoc(), 1, 1, 1);
 
