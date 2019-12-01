@@ -33,7 +33,7 @@ public class CoalGenerator extends Structure {
 
 
     public CoalGenerator(Location loc) {
-        super(loc, "coalGenerators", 100000);
+        super(loc, "coalGenerators", 10000);
 
         create();
     }
@@ -42,7 +42,7 @@ public class CoalGenerator extends Structure {
         super(loc, type, maxEnergy, energy);
 
         setHologram(HologramsAPI.createHologram(VanillaPlus.instance, new Location(getLoc().getWorld(), getLoc().getX() + 0.5, getLoc().getY() + 2, getLoc().getZ() + 0.5)));
-        line = getHologram().appendTextLine(ChatColor.RED + "" + getEnergy() + "/" + getMaxEnergy() + " VU");
+        line = getHologram().appendTextLine(ChatColor.RED + "" + (getEnergy() / 1000) + "k/" + (getMaxEnergy() / 1000) + "k VU");
         BlockUpdater.machines.put(loc, this);
     }
 
@@ -53,7 +53,7 @@ public class CoalGenerator extends Structure {
 
         BlockUpdater.machines.put(getLoc(), this);
         setHologram(HologramsAPI.createHologram(VanillaPlus.instance, new Location(getLoc().getWorld(), getLoc().getX() + 0.5, getLoc().getY() + 2, getLoc().getZ() + 0.5)));
-        line = getHologram().appendTextLine(ChatColor.RED + "" + getEnergy() + "/" + getMaxEnergy() + " VU");
+        line = getHologram().appendTextLine(ChatColor.RED + "" + (getEnergy() / 1000) + "k/" + (getMaxEnergy() / 1000) + "k VU");
 
         model.addArmorStand(new CustomModelPart(getLoc().clone().add(0.5, 0.25, 0.5)).material(new ItemStack(Material.REDSTONE_BLOCK)).small(true).gravity(false));
         model.addArmorStand(new CustomModelPart(getLoc().clone().add(0.5, -0.5, 0.5)).material(new ItemStack(Material.GLASS)).gravity(false));
@@ -120,7 +120,7 @@ public class CoalGenerator extends Structure {
             if (getEnergy() > getMaxEnergy()) setEnergy(getMaxEnergy());
 
             //Update hologram with energy count
-            line.setText(ChatColor.RED + "" + getEnergy() + "/" + getMaxEnergy() + " VU");
+            line.setText(ChatColor.RED + "" + (getEnergy() / 1000) + "k/" + (getMaxEnergy() / 1000) + "k VU");
 
             if (generator.getInventory().getSmelting() != null) {
                 generator.getInventory().setSmelting(null);
