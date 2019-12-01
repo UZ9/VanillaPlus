@@ -9,7 +9,6 @@ public abstract class Structure {
 
     private int energy;
     private int maxEnergy;
-    private String machineID;
     private String type;
     private Location loc;
 
@@ -17,15 +16,13 @@ public abstract class Structure {
         this.loc = loc;
         this.type = type;
         this.maxEnergy = maxEnergy;
-        this.machineID = MachineUtils.generateID();
 
 
-        MachineUtils.generateMachineConfig(type, machineID, loc, maxEnergy);
+        //MachineUtils.generateMachineConfig(type, loc, maxEnergy);
     }
 
-    public Structure(Location loc, String machineID, String type, int maxEnergy, int energy) {
+    public Structure(Location loc, String type, int maxEnergy, int energy) {
         this.loc = loc;
-        this.machineID = machineID;
         this.type = type;
         this.maxEnergy = maxEnergy;
         this.energy = energy;
@@ -68,13 +65,6 @@ public abstract class Structure {
         this.maxEnergy = maxEnergy;
     }
 
-    public String getMachineID() {
-        return machineID;
-    }
-
-    public void setMachineID(String machineID) {
-        this.machineID = machineID;
-    }
 
     public Location getLoc() {
         return loc;

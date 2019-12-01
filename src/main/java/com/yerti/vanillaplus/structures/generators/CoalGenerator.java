@@ -34,15 +34,16 @@ public class CoalGenerator extends Structure {
 
     public CoalGenerator(Location loc) {
         super(loc, "coalGenerators", 100000);
+
         create();
     }
 
-    public CoalGenerator(Location loc, String machineID, String type, Integer maxEnergy, Integer energy) {
-        super(loc, machineID, type, maxEnergy, energy);
+    public CoalGenerator(Location loc, String type, Integer maxEnergy, Integer energy) {
+        super(loc, type, maxEnergy, energy);
 
         setHologram(HologramsAPI.createHologram(VanillaPlus.instance, new Location(getLoc().getWorld(), getLoc().getX() + 0.5, getLoc().getY() + 2, getLoc().getZ() + 0.5)));
         line = getHologram().appendTextLine(ChatColor.RED + "" + getEnergy() + "/" + getMaxEnergy() + " VU");
-        BlockUpdater.machines.put(getLoc(), this);
+        BlockUpdater.machines.put(loc, this);
     }
 
 
@@ -64,7 +65,7 @@ public class CoalGenerator extends Structure {
     public void destroy() {
         getHologram().delete();
         BlockUpdater.machines.remove(getLoc());
-        MachineUtils.removeMachineConfig("coalGenerators", getMachineID());
+        //MachineUtils.removeMachineConfig("coalGenerators", getMachineID());
 
         Collection<Entity> entities = getLoc().getWorld().getNearbyEntities(getLoc(), 1, 1, 1);
 
@@ -78,6 +79,7 @@ public class CoalGenerator extends Structure {
         }
 
         model.destroy();
+        VanillaPlus.instance.machineSaver.removeMachine(this);
 
 
     }

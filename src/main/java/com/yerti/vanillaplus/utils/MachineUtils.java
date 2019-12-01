@@ -29,14 +29,15 @@ public class MachineUtils {
 
     }
 
-    /***
+
+    /*
      * Generates default machine configuration in machine yaml file containing the location as well as the stored energy inside
      * @param machineType
      * @param machineID
      * @param loc
      * @param maxVU
      */
-    public static void generateMachineConfig(String machineType, String machineID, Location loc, int maxVU) {
+    /*(public static void generateMachineConfig(String machineType, String machineID, Location loc, int maxVU) {
         config.set("generators." + machineType + "." + machineID + ".x", loc.getBlockX());
         config.set("generators." + machineType + "." + machineID + ".y", loc.getBlockY());
         config.set("generators." + machineType + "." + machineID + ".z", loc.getBlockZ());
@@ -91,7 +92,7 @@ public class MachineUtils {
         }
 
         return false;
-    }
+    }*/
 
     public static String getCardinalDirection(Player player) {
         double rot = (player.getLocation().getYaw() - 90) % 360;

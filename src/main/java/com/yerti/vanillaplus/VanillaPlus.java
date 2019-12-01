@@ -1,17 +1,16 @@
 package com.yerti.vanillaplus;
 
 import com.yerti.vanillaplus.core.YertiPlugin;
+import com.yerti.vanillaplus.data.MachineSaver;
 import com.yerti.vanillaplus.core.entity.ModelProtection;
 import com.yerti.vanillaplus.core.items.CustomItemStack;
 import com.yerti.vanillaplus.core.recipe.CustomRecipe;
 import com.yerti.vanillaplus.commands.BaseCommand;
-import com.yerti.vanillaplus.events.inventory.FurnacePrevention;
 import com.yerti.vanillaplus.events.inventory.WrenchInteract;
 import com.yerti.vanillaplus.items.ItemList;
 import com.yerti.vanillaplus.listeners.MachinePlaceListener;
 import com.yerti.vanillaplus.structures.Structure;
 import com.yerti.vanillaplus.utils.BlockUpdater;
-import com.yerti.vanillaplus.utils.MachineUtils;
 import com.yerti.vanillaplus.utils.config.Config;
 import com.yerti.vanillaplus.utils.config.GeneratorList;
 import com.yerti.vanillaplus.utils.config.Messages;
@@ -29,6 +28,8 @@ public class VanillaPlus extends YertiPlugin {
     public static File customConfigFile;
 
     public static VanillaPlus instance;
+
+    public MachineSaver machineSaver;
 
     public void onEnable() {
 
@@ -56,8 +57,9 @@ public class VanillaPlus extends YertiPlugin {
 
         //Initiating events & config
         new Config(this);
-        new FurnacePrevention(this);
         new WrenchInteract(this);
+
+        machineSaver = new MachineSaver();
 
         //Initiating custom config data file (for saving)
         customConfigFile = new File(getDataFolder() + "/machines.yml");
@@ -68,8 +70,6 @@ public class VanillaPlus extends YertiPlugin {
         //Initialize Block Updater (Updating for machines)
         BlockUpdater bu = new BlockUpdater(this);
 
-        //im sorry it's 3 am and i dont have the strength for a delay timer
-        //TODO: change this badness
         Bukkit.getScheduler().runTaskLater(this, () -> {
             CustomRecipe genCore = new CustomRecipe(new CustomItemStack(Material.FIREBALL, 1)
                     .name("&eGenerator Core")
@@ -87,8 +87,7 @@ public class VanillaPlus extends YertiPlugin {
 
             CustomRecipe coalGen = new CustomRecipe(ItemList.COAL_GENERATOR);
 
-            //ironingot iglass ironingot
-            //ironblock charge ironblock
+
             coalGen.shape("%t%", "q@q", "efe");
             coalGen.setIngredient('%', new ItemStack(Material.IRON_INGOT));
             coalGen.setIngredient('t', new ItemStack(Material.GLASS));
@@ -117,7 +116,9 @@ public class VanillaPlus extends YertiPlugin {
     @Override
     public void onDisable() {
         for (Structure structure : BlockUpdater.machines.values()) {
-            MachineUtils.updateMachineConfig(structure.getType(), structure.getMachineID(), structure.getEnergy());
+            machineSaver.saveMachineSync(structure);
+
+            //MachineUtils.updateMachineConfig(structure.getType(), structure.getMachineID(), structure.getEnergy());
         }
     }
 

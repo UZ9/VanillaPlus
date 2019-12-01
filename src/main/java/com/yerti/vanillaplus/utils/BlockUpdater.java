@@ -26,11 +26,17 @@ public class BlockUpdater {
     private GeneratorList customConfig = VanillaPlus.customConfig;
     public BlockUpdater(Plugin pl) {
         this.pl = pl;
-        addStructures();
+        System.out.println("Starting");
+        System.out.println("Machines: " + machines.size());
+        //addStructures();
 
     }
 
     public void gameLoop() {
+
+        System.out.println(machines.size());
+
+        VanillaPlus.instance.machineSaver.getStructures();
 
         updateMachines();
         Bukkit.getScheduler().scheduleSyncDelayedTask(pl, this::gameLoop, 20L);
@@ -88,6 +94,7 @@ public class BlockUpdater {
 
 
     private void updateMachines() {
+
 
         for (Map.Entry<Location, Structure> entry : machines.entrySet()) {
 

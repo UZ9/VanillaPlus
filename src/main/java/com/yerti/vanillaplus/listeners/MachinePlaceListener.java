@@ -22,6 +22,7 @@ public class MachinePlaceListener implements Listener {
         if (!event.getItemInHand().hasItemMeta()) return;
 
         if (event.getItemInHand().getItemMeta().equals(ItemList.COAL_GENERATOR.getItemMeta())) {
+            System.out.println(event.getBlock().getLocation().toString());
             new CoalGenerator(event.getBlock().getLocation());
         }
 
