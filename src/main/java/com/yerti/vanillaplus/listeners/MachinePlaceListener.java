@@ -3,6 +3,7 @@ package com.yerti.vanillaplus.listeners;
 import com.yerti.vanillaplus.items.ItemList;
 import com.yerti.vanillaplus.structures.Structure;
 import com.yerti.vanillaplus.structures.generators.CoalGenerator;
+import com.yerti.vanillaplus.structures.storage.CraftingTerminal;
 import com.yerti.vanillaplus.utils.BlockUpdater;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -24,6 +25,8 @@ public class MachinePlaceListener implements Listener {
         if (event.getItemInHand().getItemMeta().equals(ItemList.COAL_GENERATOR.getItemMeta())) {
             System.out.println(event.getBlock().getLocation().toString());
             new CoalGenerator(event.getBlock().getLocation());
+        } else if (event.getItemInHand().getItemMeta().equals(ItemList.CRAFTING_TERMINAL.getItemMeta())) {
+            new CraftingTerminal(event.getBlock().getLocation());
         }
 
 
@@ -36,10 +39,15 @@ public class MachinePlaceListener implements Listener {
 
         for (Block block : event.blockList()) {
             if (BlockUpdater.machines.containsKey(block.getLocation())) {
+                if (BlockUpdater.machines.get(block.getLocation()).getType().equalsIgnoreCase("COAL_GENERATOR")) {
+                    block.getWorld().dropItem(block.getLocation(), ItemList.COAL_GENERATOR);
+                } else {
+                    block.getWorld().dropItem(block.getLocation(), ItemList.CRAFTING_TERMINAL);
+                }
                 BlockUpdater.machines.get(block.getLocation()).destroy();
                 block.setType(Material.AIR);
                 event.setCancelled(true);
-                block.getWorld().dropItem(block.getLocation(), ItemList.COAL_GENERATOR);
+
             }
         }
 

@@ -1,5 +1,6 @@
 package com.yerti.vanillaplus.core.items;
 
+import com.gmail.filoghost.holographicdisplays.bridge.protocollib.ProtocolLibHook;
 import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
 import com.google.gson.*;
 import org.bukkit.Material;
@@ -134,6 +135,7 @@ public class ItemStackUtils {
             final JsonObject itemmeta = new JsonObject();
             if (meta.hasDisplayName()) {
                 itemmeta.addProperty("displayname", meta.getDisplayName());
+
             }
             if (meta.hasLore()) {
                 itemmeta.add("lore", gson.toJsonTree(meta.getLore()));

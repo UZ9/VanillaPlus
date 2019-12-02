@@ -1,7 +1,9 @@
 package com.yerti.vanillaplus.commands;
 
+import com.yerti.vanillaplus.VanillaPlus;
 import com.yerti.vanillaplus.core.command.CustomCommand;
 import com.yerti.vanillaplus.core.command.SubCommand;
+import com.yerti.vanillaplus.core.inventories.AnvilGUI;
 import com.yerti.vanillaplus.core.items.CustomItemStack;
 import com.yerti.vanillaplus.core.items.ItemMetaData;
 import com.yerti.vanillaplus.utils.config.Messages;
@@ -37,6 +39,18 @@ public class BaseCommand {
 
         ((Player) executor).getInventory().addItem(stack);
 
+    }
+
+    @SubCommand(parent = "vanillaplus", name = "test", permission = "", usage = "/vanillaplus test", description = "test")
+    public void test(CommandSender sender, Command command,  String[] args) {
+        new AnvilGUI.Builder()
+                .preventClose()
+                .onClose(player -> player.sendMessage("Success"))
+                .onComplete((player, text) -> AnvilGUI.Response.close())
+
+                .plugin(VanillaPlus.instance)
+                .text("Search Items")
+                .open((Player) sender);
     }
 
 }

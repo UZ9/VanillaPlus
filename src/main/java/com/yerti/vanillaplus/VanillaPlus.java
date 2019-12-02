@@ -6,9 +6,9 @@ import com.yerti.vanillaplus.core.items.CustomItemStack;
 import com.yerti.vanillaplus.core.recipe.CustomRecipe;
 import com.yerti.vanillaplus.commands.BaseCommand;
 import com.yerti.vanillaplus.data.MachineSaver;
-import com.yerti.vanillaplus.events.inventory.WrenchInteract;
 import com.yerti.vanillaplus.items.ItemList;
 import com.yerti.vanillaplus.listeners.MachinePlaceListener;
+import com.yerti.vanillaplus.listeners.PanelListener;
 import com.yerti.vanillaplus.structures.Structure;
 import com.yerti.vanillaplus.utils.BlockUpdater;
 import com.yerti.vanillaplus.utils.config.Config;
@@ -36,6 +36,7 @@ public class VanillaPlus extends YertiPlugin {
 
         Bukkit.getServer().getPluginManager().registerEvents(new ModelProtection(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new MachinePlaceListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new PanelListener(), this);
         load(BaseCommand.class);
 
         instance = this;
@@ -57,7 +58,6 @@ public class VanillaPlus extends YertiPlugin {
 
         //Initiating events & config
         new Config(this);
-        new WrenchInteract(this);
 
         machineSaver = new MachineSaver();
 
@@ -98,6 +98,15 @@ public class VanillaPlus extends YertiPlugin {
             coalGen.setIngredient('e', new ItemStack(Material.REDSTONE));
             coalGen.setIngredient('f', new ItemStack(Material.REDSTONE_BLOCK));
             getServer().addRecipe(coalGen.build());
+
+            CustomRecipe terminal = new CustomRecipe(ItemList.CRAFTING_TERMINAL);
+
+            terminal.shape("%@%", "*#*", "%*%");
+            terminal.setIngredient('%', new ItemStack(Material.REDSTONE));
+            terminal.setIngredient('@', new ItemStack(Material.NETHER_STAR));
+            terminal.setIngredient('*', new ItemStack(Material.IRON_BLOCK));
+            terminal.setIngredient('#', new ItemStack(Material.SEA_LANTERN));
+            getServer().addRecipe(terminal.build());
 
 
 

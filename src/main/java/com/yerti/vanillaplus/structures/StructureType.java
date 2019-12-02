@@ -1,10 +1,11 @@
 package com.yerti.vanillaplus.structures;
 
 import com.yerti.vanillaplus.structures.generators.CoalGenerator;
+import com.yerti.vanillaplus.structures.storage.CraftingTerminal;
 
 public enum StructureType {
 
-    COALGENERATORS(CoalGenerator.class);
+    COAL_GENERATOR(CoalGenerator.class), CRAFTING_TERMINAL(CraftingTerminal.class);
 
     Class<? extends Structure> structureParent;
 
