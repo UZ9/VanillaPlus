@@ -9,10 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 
 public class MachineSaver {
@@ -60,22 +57,36 @@ public class MachineSaver {
 
         System.out.println("ASDADWASDW");
 
+        if (location == null) System.out.println("wackkkkk");
+
+
         try {
-            Statement statement = MachineSaver.this.connection.createStatement();
-            ResultSet set = statement.executeQuery("SELECT world FROM machines where world = '" + world + "' and location = '" + serializeLocation(location) + "';");
-            statement.close();
+            System.out.println("results: for l a m p");
 
-            Statement statement1 = MachineSaver.this.connection.createStatement();
+            if (MachineSaver.this.connection == null) reopen();
+            Statement c = MachineSaver.this.connection.createStatement();
+            ResultSet test = c.executeQuery("select * from machines where world = '" + world + "' and location  = '" + serializeLocation(location) + "'");
+            connection.close();
 
-            if (set.next()) {
-                System.out.println("Yes exists");
-                statement1.execute("update machines set vu = " + structure.getEnergy() + " where world = '" + world + "' and location = '" + serializeLocation(location)  + "';");
+
+            if (test.next()) {
+                test.close();
+                c.close();
+
+                reopen();
+                Statement statement = MachineSaver.this.connection.createStatement();
+                statement.executeUpdate("update machines set vu = " + structure.getEnergy() + " where world = '" + world + "' and location = '" + serializeLocation(location)  + "';");
             } else {
-                System.out.println("No exists");
-                statement1.execute("insert into machines(world, location, vu, type) values ('" + world + "', '" + serializeLocation(location) + "', " + structure.getEnergy() + ", '" + structure.getType()+ "')");
+                test.close();
+                reopen();
+                Statement statement = MachineSaver.this.connection.createStatement();
+                statement.executeUpdate("insert into machines(world, location, vu, type) values ('" + world + "', '" + serializeLocation(location) + "', " + structure.getEnergy() + ", '" + structure.getType()+ "')");
+
             }
 
-            statement1.close();
+            connection.close();
+
+
 
 
         } catch (Exception e) {
@@ -97,14 +108,6 @@ public class MachineSaver {
     }
 
     public void getStructures() {
-
-
-
-
-
-
-
-
 
         try {
 
@@ -140,6 +143,21 @@ public class MachineSaver {
 
 
 
+    }
+
+    //I don't know why but the sql kept randomly locking until I put this here, either I messed something up or it magically worked before
+    private void reopen() {
+        final File file = new File(VanillaPlus.instance.getDataFolder(), "machines.sqlite");
+
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdir();
+        }
+
+        try {
+            this.connection = DriverManager.getConnection("jdbc:sqlite:" + file.getAbsolutePath());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private String serializeLocation(Location location) {

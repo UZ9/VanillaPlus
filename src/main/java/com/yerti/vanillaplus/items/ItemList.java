@@ -27,7 +27,7 @@ public class ItemList {
             .addFlag(ItemFlag.HIDE_ENCHANTS);
 
     // STORAGE
-    public static final ItemStack CRAFTING_TERMINAL = new CustomItemStack(Material.SEA_LANTERN, 1)
+    public static final ItemStack CRAFTING_TERMINAL = new CustomItemStack(Material.IRON_BLOCK, 1)
             .name("&eCrafting Terminal")
             .enchant(Enchantment.ARROW_FIRE, 1)
             .addFlag(ItemFlag.HIDE_ENCHANTS);

@@ -5,12 +5,13 @@ import com.yerti.vanillaplus.structures.Structure;
 import com.yerti.vanillaplus.structures.generators.CoalGenerator;
 import com.yerti.vanillaplus.structures.storage.CraftingTerminal;
 import com.yerti.vanillaplus.utils.BlockUpdater;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
@@ -28,8 +29,6 @@ public class MachinePlaceListener implements Listener {
         } else if (event.getItemInHand().getItemMeta().equals(ItemList.CRAFTING_TERMINAL.getItemMeta())) {
             new CraftingTerminal(event.getBlock().getLocation());
         }
-
-
 
 
     }
@@ -57,16 +56,29 @@ public class MachinePlaceListener implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
 
-        if (e.getBlock().getType().equals(Material.FURNACE) || e.getBlock().getType().equals(Material.BURNING_FURNACE)) {
-            if (BlockUpdater.machines.containsKey(e.getBlock().getLocation())) {
-                Structure structure = BlockUpdater.machines.get(e.getBlock().getLocation());
-                structure.destroy();
-                e.getBlock().setType(Material.AIR);
-                e.setCancelled(true);
-                e.getBlock().getWorld().dropItem(e.getBlock().getLocation(), ItemList.COAL_GENERATOR);
-            }
+        if (!BlockUpdater.machines.containsKey(e.getBlock().getLocation())) return;
 
+        Structure structure = BlockUpdater.machines.get(e.getBlock().getLocation());
+        Location loc = e.getBlock().getLocation();
+        World w = e.getBlock().getWorld();
+
+        switch (e.getBlock().getType()) {
+            case FURNACE:
+                System.out.println("Wack2");
+            case BURNING_FURNACE:
+                System.out.println("Dropping 1");
+                w.dropItem(loc, ItemList.COAL_GENERATOR);
+                break;
+            case IRON_BLOCK:
+                System.out.println("Dropping 2");
+                w.dropItem(loc, ItemList.CRAFTING_TERMINAL);
+                break;
         }
+
+        e.getBlock().setType(Material.AIR);
+        e.setCancelled(true);
+        structure.destroy();
+
 
     }
 

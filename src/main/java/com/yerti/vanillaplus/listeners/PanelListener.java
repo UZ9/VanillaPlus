@@ -2,6 +2,7 @@ package com.yerti.vanillaplus.listeners;
 
 import com.yerti.vanillaplus.VanillaPlus;
 import com.yerti.vanillaplus.core.inventories.AnvilGUI;
+import com.yerti.vanillaplus.core.titles.ActionBar;
 import com.yerti.vanillaplus.utils.BlockUpdater;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,7 +17,11 @@ public class PanelListener implements Listener {
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (BlockUpdater.machines.containsKey(event.getClickedBlock().getLocation())) {
                 if (BlockUpdater.machines.get(event.getClickedBlock().getLocation()).getType().equalsIgnoreCase("CRAFTING_TERMINAL")) {
-                    if (BlockUpdater.machines.get(event.getClickedBlock().getLocation()).getEnergy() == 0) return;
+                    if (BlockUpdater.machines.get(event.getClickedBlock().getLocation()).getEnergy() == 0) {
+                        ActionBar bar = new ActionBar("&cThis block doesn't have power!");
+                        bar.sendToPlayer(event.getPlayer());
+                        return;
+                    }
 
                     new AnvilGUI.Builder()
                             .preventClose()
