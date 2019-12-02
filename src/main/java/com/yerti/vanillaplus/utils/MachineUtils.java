@@ -1,13 +1,6 @@
 package com.yerti.vanillaplus.utils;
 
-import com.yerti.vanillaplus.VanillaPlus;
-import org.bukkit.Location;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Random;
 
 
 public class MachineUtils {

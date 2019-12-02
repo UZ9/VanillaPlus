@@ -4,6 +4,7 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.yerti.vanillaplus.core.entity.CustomModel;
 import com.yerti.vanillaplus.core.entity.CustomModelPart;
 import com.yerti.vanillaplus.VanillaPlus;
+import com.yerti.vanillaplus.core.inventories.CustomInventory;
 import com.yerti.vanillaplus.structures.Structure;
 import com.yerti.vanillaplus.utils.BlockUpdater;
 import com.yerti.vanillaplus.utils.MachineUtils;
@@ -13,12 +14,15 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Furnace;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftInventory;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.FurnaceInventory;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.Collection;
 
 
@@ -36,13 +40,17 @@ public class CoalGenerator extends Structure {
         super(loc, "coalGenerators", 10000);
 
         create();
+
+        Inventory inventory = new CustomInventory(null, 9, "Bob", new ItemStack(Material.GLASS)).getInventory();
+
+
     }
 
     public CoalGenerator(Location loc, String type, Integer maxEnergy, Integer energy) {
         super(loc, type, maxEnergy, energy);
 
         setHologram(HologramsAPI.createHologram(VanillaPlus.instance, new Location(getLoc().getWorld(), getLoc().getX() + 0.5, getLoc().getY() + 2, getLoc().getZ() + 0.5)));
-        line = getHologram().appendTextLine(ChatColor.RED + "" + (getEnergy() / 1000) + "k/" + (getMaxEnergy() / 1000) + "k VU");
+        line = getHologram().appendTextLine(ChatColor.RED + "" + new DecimalFormat("##.#").format(getEnergy() / 1000.) + "/" + new DecimalFormat("##.#").format(getMaxEnergy() / 1000.) + "k VU");
         BlockUpdater.machines.put(loc, this);
     }
 
@@ -53,7 +61,7 @@ public class CoalGenerator extends Structure {
 
         BlockUpdater.machines.put(getLoc(), this);
         setHologram(HologramsAPI.createHologram(VanillaPlus.instance, new Location(getLoc().getWorld(), getLoc().getX() + 0.5, getLoc().getY() + 2, getLoc().getZ() + 0.5)));
-        line = getHologram().appendTextLine(ChatColor.RED + "" + (getEnergy() / 1000) + "k/" + (getMaxEnergy() / 1000) + "k VU");
+        line = getHologram().appendTextLine(ChatColor.RED + "" + new DecimalFormat("##.#").format(getEnergy() / 1000.) + "k/" + new DecimalFormat("##.#").format(getMaxEnergy() / 1000.) + "k VU");
 
         model.addArmorStand(new CustomModelPart(getLoc().clone().add(0.5, 0.25, 0.5)).material(new ItemStack(Material.REDSTONE_BLOCK)).small(true).gravity(false));
         model.addArmorStand(new CustomModelPart(getLoc().clone().add(0.5, -0.5, 0.5)).material(new ItemStack(Material.GLASS)).gravity(false));
@@ -120,7 +128,7 @@ public class CoalGenerator extends Structure {
             if (getEnergy() > getMaxEnergy()) setEnergy(getMaxEnergy());
 
             //Update hologram with energy count
-            line.setText(ChatColor.RED + "" + (getEnergy() / 1000) + "k/" + (getMaxEnergy() / 1000) + "k VU");
+            line.setText(ChatColor.RED + "" + new DecimalFormat("##.#").format(getEnergy() / 1000.) + "k/" + new DecimalFormat("##.#").format(getMaxEnergy() / 1000.) + "k VU");
 
             if (generator.getInventory().getSmelting() != null) {
                 generator.getInventory().setSmelting(null);
