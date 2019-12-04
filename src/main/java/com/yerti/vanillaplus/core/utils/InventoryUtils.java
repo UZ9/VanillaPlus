@@ -3,7 +3,7 @@ package com.yerti.vanillaplus.core.utils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class Utilities {
+public class InventoryUtils {
 
      /**
      * Checks if the player can fit the ItemStack within their inventory.

@@ -16,6 +16,12 @@ public class MenuItem extends ItemStack {
     private Consumer<InventoryClickEvent> event;
 
 
+    public MenuItem(ItemStack stack) {
+        super(stack);
+        this.event = null;
+    }
+
+
     /**
      * Creates a MenuItem off of a material, amount, and an action for the inventory click event.
      * @param stack {@link ItemStack} the ItemStack to be used
@@ -31,6 +37,9 @@ public class MenuItem extends ItemStack {
      * @param e
      */
     void onClick(final InventoryClickEvent e) {
+
+        if (event == null) return;
+
         event.accept(e);
     }
 

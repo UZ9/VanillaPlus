@@ -4,6 +4,7 @@ import com.google.gson.JsonParser;
 import com.yerti.vanillaplus.VanillaPlus;
 import com.yerti.vanillaplus.structures.Structure;
 import com.yerti.vanillaplus.structures.StructureType;
+import com.yerti.vanillaplus.utils.BlockUpdater;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -15,11 +16,9 @@ import java.sql.*;
 public class MachineSaver {
 
     private Connection connection;
-    private JsonParser parser;
 
 
     public MachineSaver() {
-        this.parser = new JsonParser();
 
         try {
             Class.forName("org.sqlite.JDBC");
@@ -39,6 +38,12 @@ public class MachineSaver {
         } catch (Exception e) {
             e.printStackTrace();;
         }
+
+        Bukkit.getScheduler().runTaskTimer(VanillaPlus.instance, () -> {
+            for (Structure structure : BlockUpdater.machines.values()) {
+                saveMachineAsync(structure);
+            }
+        }, 0L, 20L * 60L * 5L);
 
     }
 

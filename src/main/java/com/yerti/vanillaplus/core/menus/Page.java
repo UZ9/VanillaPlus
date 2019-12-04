@@ -58,7 +58,7 @@ public class Page {
     }
 
     /**
-     * Builds the ivnentory off of the patterns and keys
+     * Builds the inventory off of the patterns and keys
      * If a key is not defined for a particular character, the slot will be set to air
      * @return the result inventory
      */
@@ -92,7 +92,7 @@ public class Page {
      * @return a list of {@link com.yerti.vanillaplus.core.menus.MenuItem}s
      */
     public List<MenuItem> getMenuItems() {
-        return Arrays.asList(itemKeys.values().toArray(new MenuItem[itemKeys.values().size()]));
+        return Arrays.asList(itemKeys.values().toArray(new MenuItem[0]));
     }
 
 

@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +14,8 @@ import java.util.List;
  */
 public class MenuListener implements Listener {
 
-    List<Page> menus;
-    List<String> inventories;
+    private List<Page> menus;
+    private List<Inventory> inventories;
 
     /**
      * Creates a MenuListener off of a list of {@link Page}s
@@ -23,7 +24,7 @@ public class MenuListener implements Listener {
     public MenuListener(List<Page> menus) {
         this.menus = menus;
         this.inventories = new ArrayList<>();
-        menus.forEach(menu -> inventories.add(menu.build().getName()));
+        menus.forEach(menu -> inventories.add(menu.build()));
     }
 
     /**
@@ -31,16 +32,15 @@ public class MenuListener implements Listener {
      * @param event
      */
     @EventHandler
-    //TODO: Change to contains inventory rather than name
     public void onPlayerClick(InventoryClickEvent event) {
         if (event.getInventory() == null) return;
-        if (!inventories.contains(event.getInventory().getName())) return;
+        if (!inventories.contains(event.getInventory())) return;
         if (event.getCurrentItem() == null || event.getCurrentItem().getType().equals(Material.AIR)) return;
         event.setCancelled(true);
 
         if (event.getCurrentItem().getItemMeta() == null) return;
 
-        Page menu = menus.get(inventories.indexOf(event.getInventory().getName()));
+        Page menu = menus.get(inventories.indexOf(event.getInventory()));
 
         menu.getMenuItems().forEach(menuItem -> {
             if (event.getCurrentItem().getItemMeta().equals(menuItem.getItemMeta())) {
