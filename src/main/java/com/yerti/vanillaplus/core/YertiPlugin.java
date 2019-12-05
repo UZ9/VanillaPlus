@@ -2,8 +2,14 @@ package com.yerti.vanillaplus.core;
 
 
 import com.yerti.vanillaplus.core.command.CommandFramework;
+import com.yerti.vanillaplus.core.enchantmenets.CombatEnchant;
+import com.yerti.vanillaplus.core.enchantmenets.EnchantmentHandler;
 import com.yerti.vanillaplus.core.entity.ModelProtection;
 import com.yerti.vanillaplus.core.recipe.CustomRecipeHandler;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -19,6 +25,14 @@ public class YertiPlugin extends JavaPlugin {
         new CommandFramework(this, commandClass);
         getServer().getPluginManager().registerEvents(new ModelProtection(), this);
         getServer().getPluginManager().registerEvents(new CustomRecipeHandler(), this);
+        getServer().getPluginManager().registerEvents(new EnchantmentHandler(), this);
+
+        new CombatEnchant("Flaming Keg", 40, 40, 40, e -> {
+           Entity victim = e.getEntity();
+           victim.getWorld().playEffect(victim.getLocation(), Effect.MOBSPAWNER_FLAMES, 1, 1);
+           victim.setFireTicks(100);
+           victim.getWorld().createExplosion(victim.getLocation(), 1, false);
+        });
     }
 
     protected void load() {

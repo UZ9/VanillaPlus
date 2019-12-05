@@ -1,10 +1,5 @@
 package com.yerti.vanillaplus.core.database;
 
-import com.google.gson.JsonParser;
-import com.yerti.vanillaplus.VanillaPlus;
-import com.yerti.vanillaplus.structures.Structure;
-import com.yerti.vanillaplus.utils.BlockUpdater;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
