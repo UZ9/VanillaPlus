@@ -1,12 +1,13 @@
 package com.yerti.vanillaplus.core.block;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Effect;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Various utilities for {@link Block}
@@ -31,6 +32,28 @@ public class BlockUtils {
         }
 
     }
+
+    public static List<Location> getBlocks(Location l, int radius)
+    {
+        World w = l.getWorld();
+        int xCoord = (int) l.getX();
+        int zCoord = (int) l.getZ();
+        int YCoord = (int) l.getY();
+
+        List<Location> tempList = new ArrayList<>();
+        for (int x = -radius; x <= radius; x++)
+        {
+            for (int z = -radius; z <= radius; z++)
+            {
+                for (int y = -radius; y <= radius; y++)
+                {
+                    tempList.add(new Location(w, xCoord + x, YCoord + y, zCoord + z));
+                }
+            }
+        }
+        return tempList;
+    }
+
 
 
 

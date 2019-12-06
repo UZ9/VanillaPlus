@@ -60,36 +60,49 @@ public class MachineSaver {
         String world = structure.getLoc().getWorld().getName();
         Location location = structure.getLoc();
 
-        System.out.println("ASDADWASDW");
 
-        if (location == null) System.out.println("wackkkkk");
+        if (location == null) return;
 
 
         try {
-            System.out.println("results: for l a m p");
 
-            if (MachineSaver.this.connection == null) reopen();
-            Statement c = MachineSaver.this.connection.createStatement();
-            ResultSet test = c.executeQuery("select * from machines where world = '" + world + "' and location  = '" + serializeLocation(location) + "'");
-            connection.close();
+            reopen();
 
 
-            if (test.next()) {
-                test.close();
-                c.close();
+                try {
+                    Statement c = MachineSaver.this.connection.createStatement();
 
-                reopen();
-                Statement statement = MachineSaver.this.connection.createStatement();
-                statement.executeUpdate("update machines set vu = " + structure.getEnergy() + " where world = '" + world + "' and location = '" + serializeLocation(location)  + "';");
-            } else {
-                test.close();
-                reopen();
-                Statement statement = MachineSaver.this.connection.createStatement();
-                statement.executeUpdate("insert into machines(world, location, vu, type) values ('" + world + "', '" + serializeLocation(location) + "', " + structure.getEnergy() + ", '" + structure.getType()+ "')");
 
-            }
+                    ResultSet test = c.executeQuery("select * from machines where world = '" + world + "' and location  = '" + serializeLocation(location) + "'");
+                    connection.close();
 
-            connection.close();
+                    if (test.next()) {
+                        test.close();
+                        c.close();
+
+                        reopen();
+                        Statement statement = MachineSaver.this.connection.createStatement();
+                        statement.executeUpdate("update machines set vu = " + structure.getEnergy() + " where world = '" + world + "' and location = '" + serializeLocation(location) + "';");
+                        connection.close();
+
+                    } else {
+                        test.close();
+                        c.close();
+                        reopen();
+                        Statement statement = MachineSaver.this.connection.createStatement();
+                        statement.executeUpdate("insert into machines(world, location, vu, type) values ('" + world + "', '" + serializeLocation(location) + "', " + structure.getEnergy() + ", '" + structure.getType() + "')");
+                        connection.close();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+
+
+
+
 
 
 
@@ -102,6 +115,7 @@ public class MachineSaver {
     public void removeMachine(Structure structure) {
         Bukkit.getScheduler().runTaskAsynchronously(VanillaPlus.instance, () -> {
            try {
+               reopen();
                Statement statement = MachineSaver.this.connection.createStatement();
                statement.execute("DELETE FROM 'machines' WHERE world = '" + structure.getLoc().getWorld().getName() + "' AND location = '" + serializeLocation(structure.getLoc()) + "'");
                statement.close();
@@ -129,7 +143,7 @@ public class MachineSaver {
                 int energy = set.getInt(3);
                 String type = set.getString(4);
 
-               StructureType.valueOf(type.toUpperCase()).getStructureParent().getConstructor(Location.class, String.class, Integer.class, Integer.class).newInstance(location, type, 10000, energy);
+                StructureType.valueOf(type.toUpperCase()).getStructureParent().getConstructor(Location.class, String.class, Integer.class, Integer.class).newInstance(location, type, 10000, energy);
 
 
 
@@ -152,6 +166,13 @@ public class MachineSaver {
 
     //I don't know why but the sql kept randomly locking until I put this here, either I messed something up or it magically worked before
     private void reopen() {
+        try {
+            if (!connection.isClosed()) connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
         final File file = new File(VanillaPlus.instance.getDataFolder(), "machines.sqlite");
 
         if (!file.getParentFile().exists()) {

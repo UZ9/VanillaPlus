@@ -1,10 +1,13 @@
 package com.yerti.vanillaplus.listeners;
 
+import com.yerti.vanillaplus.events.StructureDestroyEvent;
+import com.yerti.vanillaplus.events.StructurePlaceEvent;
 import com.yerti.vanillaplus.items.ItemList;
 import com.yerti.vanillaplus.structures.Structure;
 import com.yerti.vanillaplus.structures.generators.CoalGenerator;
 import com.yerti.vanillaplus.structures.storage.CraftingTerminal;
 import com.yerti.vanillaplus.utils.BlockUpdater;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -22,12 +25,16 @@ public class MachinePlaceListener implements Listener {
 
 
         if (!event.getItemInHand().hasItemMeta()) return;
+        if (event.isCancelled()) return;
 
+        //TODO: Find some way of doing this automatically
         if (event.getItemInHand().getItemMeta().equals(ItemList.COAL_GENERATOR.getItemMeta())) {
             System.out.println(event.getBlock().getLocation().toString());
-            new CoalGenerator(event.getBlock().getLocation());
+            Structure structure = new CoalGenerator(event.getBlock().getLocation());
+            Bukkit.getServer().getPluginManager().callEvent(new StructurePlaceEvent(event.getPlayer(), structure));
         } else if (event.getItemInHand().getItemMeta().equals(ItemList.CRAFTING_TERMINAL.getItemMeta())) {
-            new CraftingTerminal(event.getBlock().getLocation());
+            Structure structure = new CraftingTerminal(event.getBlock().getLocation());
+            Bukkit.getServer().getPluginManager().callEvent(new StructurePlaceEvent(event.getPlayer(),  structure));
         }
 
 
@@ -35,6 +42,7 @@ public class MachinePlaceListener implements Listener {
 
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent event) {
+        if (event.isCancelled()) return;
 
         for (Block block : event.blockList()) {
             if (BlockUpdater.machines.containsKey(block.getLocation())) {
@@ -55,6 +63,7 @@ public class MachinePlaceListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
+        if (e.isCancelled()) return;
 
         if (!BlockUpdater.machines.containsKey(e.getBlock().getLocation())) return;
 
@@ -64,13 +73,10 @@ public class MachinePlaceListener implements Listener {
 
         switch (e.getBlock().getType()) {
             case FURNACE:
-                System.out.println("Wack2");
             case BURNING_FURNACE:
-                System.out.println("Dropping 1");
                 w.dropItem(loc, ItemList.COAL_GENERATOR);
                 break;
             case IRON_BLOCK:
-                System.out.println("Dropping 2");
                 w.dropItem(loc, ItemList.CRAFTING_TERMINAL);
                 break;
         }
@@ -78,6 +84,7 @@ public class MachinePlaceListener implements Listener {
         e.getBlock().setType(Material.AIR);
         e.setCancelled(true);
         structure.destroy();
+        Bukkit.getServer().getPluginManager().callEvent(new StructureDestroyEvent(e.getPlayer(), structure));
 
 
     }

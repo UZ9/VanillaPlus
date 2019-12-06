@@ -45,9 +45,13 @@ public abstract class Structure {
         return energy;
     }
 
+    public void addEnergy(int energy) { this.energy += energy; }
+
     public void setEnergy(int energy) {
         this.energy = energy;
     }
+
+    public void removeEnergy(int energy) { this.energy -= energy; }
 
     public Hologram getHologram() {
         return hologram;

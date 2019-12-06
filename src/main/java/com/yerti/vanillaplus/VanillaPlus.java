@@ -6,6 +6,7 @@ import com.yerti.vanillaplus.core.items.CustomItemStack;
 import com.yerti.vanillaplus.core.recipe.CustomRecipe;
 import com.yerti.vanillaplus.commands.BaseCommand;
 import com.yerti.vanillaplus.data.MachineSaver;
+import com.yerti.vanillaplus.energy.EnergyListener;
 import com.yerti.vanillaplus.items.ItemList;
 import com.yerti.vanillaplus.listeners.MachinePlaceListener;
 import com.yerti.vanillaplus.listeners.PanelListener;
@@ -37,6 +38,7 @@ public class VanillaPlus extends YertiPlugin {
         Bukkit.getServer().getPluginManager().registerEvents(new ModelProtection(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new MachinePlaceListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new PanelListener(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new EnergyListener(), this);
         load(BaseCommand.class);
 
         instance = this;

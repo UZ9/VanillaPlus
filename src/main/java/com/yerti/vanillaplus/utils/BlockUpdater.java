@@ -27,12 +27,16 @@ public class BlockUpdater {
 
     public void gameLoop() {
 
+        updateMachines();
+
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(pl, this::gameLoop, 20L);
     }
 
 
     private void updateMachines() {
+
+        System.out.println(machines.size());
 
 
         for (Map.Entry<Location, Structure> entry : machines.entrySet()) {

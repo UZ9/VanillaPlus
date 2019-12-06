@@ -81,8 +81,13 @@ public class CraftingTerminal extends Structure {
 
     @Override
     public void update() {
-        if (getEnergy() == 0) return;
-        setEnergy(getEnergy() - 1);
+        if (getEnergy() != 0) {
+            setEnergy(getEnergy() - 1);
+        }
+
+        line.setText(ChatColor.RED + "" + new DecimalFormat("##.#").format(getEnergy() / 1000.) + "k/" + new DecimalFormat("##.#").format(getMaxEnergy() / 1000.) + "k VU");
+
+
 
     }
 }

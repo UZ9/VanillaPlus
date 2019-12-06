@@ -23,14 +23,17 @@ public class PanelListener implements Listener {
                         return;
                     }
 
-                    new AnvilGUI.Builder()
+
+
+
+                    /*new AnvilGUI.Builder()
                             .preventClose()
                             .onClose(player -> player.sendMessage("Success"))
                             .onComplete((player, text) -> AnvilGUI.Response.close())
 
                             .plugin(VanillaPlus.instance)
                             .text("Search Items")
-                            .open(event.getPlayer());
+                            .open(event.getPlayer());*/
                 }
             }
         }
