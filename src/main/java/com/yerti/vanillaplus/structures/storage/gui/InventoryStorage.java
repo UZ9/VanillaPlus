@@ -2,23 +2,25 @@ package com.yerti.vanillaplus.structures.storage.gui;
 
 import com.yerti.vanillaplus.core.inventories.CustomInventory;
 import com.yerti.vanillaplus.core.items.CustomItemStack;
-import com.yerti.vanillaplus.core.menus.Page;
 import com.yerti.vanillaplus.core.menus.Pagination;
-import com.yerti.vanillaplus.core.menus.Row;
-import com.yerti.vanillaplus.core.menus.Size;
 import com.yerti.vanillaplus.core.utils.SkullUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class InventoryStorage implements InventoryHolder {
 
     private final ItemStack leftArrow = new CustomItemStack(SkullUtils.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmQ2OWUwNmU1ZGFkZmQ4NGU1ZjNkMWMyMTA2M2YyNTUzYjJmYTk0NWVlMWQ0ZDcxNTJmZGM1NDI1YmMxMmE5In19fQ==")).name("&cPrevious Page");
     private final ItemStack rightArrow = new CustomItemStack(SkullUtils.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTliZjMyOTJlMTI2YTEwNWI1NGViYTcxM2FhMWIxNTJkNTQxYTFkODkzODgyOWM1NjM2NGQxNzhlZDIyYmYifX19")).name("&cNext Page");
+
+    private Material[] materials = new Material[] {Material.STONE, Material.GRASS, Material.DIAMOND, Material.GOLD_AXE, Material.WOOD};
 
     public static Map<UUID, Integer> pageNumber = new HashMap<>();
     private List<CustomInventory> inventories = new ArrayList<>();
@@ -28,8 +30,45 @@ public class InventoryStorage implements InventoryHolder {
         stacks.add(new ItemStack(Material.DIAMOND));
         stacks.add(new ItemStack(Material.WOODEN_DOOR));
 
-        for (int x = 0; x < 4000; x++) {
-            stacks.add(new ItemStack(Material.values()[(new Random().nextInt(Material.values().length))]));
+        for (int x = 0; x < 1000; x++) {
+            ItemStack stack = new ItemStack(materials[new Random().nextInt(materials.length)]);
+
+            AtomicBoolean found = new AtomicBoolean(false);
+
+            stacks.forEach(item -> {
+                if (item.getType().equals(stack.getType())) {
+                    ItemMeta meta = item.getItemMeta();
+                    List<String> lore = item.getItemMeta().getLore();
+                    if (lore == null) {
+                        lore = new ArrayList<>();
+                        lore.add(ChatColor.RED + "Amount: 0");
+                    }
+
+                    if (lore.get(0).startsWith(ChatColor.RED + "Amount: ")) {
+                        lore.set(0,  ChatColor.RED + "Amount: " + (Integer.parseInt(lore.get(0).replaceAll("[\\D]", "")) + 1));
+                    } else {
+                        lore.add(0,  ChatColor.RED + "Amount: " + (Integer.parseInt(lore.get(0).replaceAll("[\\D]", "")) + 1));
+                    }
+
+
+                    if (item.getAmount() < 64) {
+                        item.setAmount(item.getAmount() + 1);
+                    }
+
+                    meta.setLore(lore);
+                    item.setItemMeta(meta);
+                    found.set(true);
+                }
+            });
+
+            if (!found.get()) {
+                if (stack.getType() == null) continue;
+
+                CustomItemStack s = new CustomItemStack(stack.getType(), 1).lore(ChatColor.RED + "Amount: 1");
+
+                stacks.add(s);
+            }
+
         }
 
         Pagination<ItemStack> pagination = new Pagination<>(54, stacks);

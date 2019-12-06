@@ -105,7 +105,10 @@ public class CustomItemStack extends ItemStack {
      */
     public CustomItemStack lore(String text) {
         ItemMeta meta = getItemMeta();
+
         List<String> lore = meta.getLore();
+
+
         if (lore == null) lore = new ArrayList<>();
         lore.add(ChatColor.translateAlternateColorCodes('&', text));
         meta.setLore(lore);

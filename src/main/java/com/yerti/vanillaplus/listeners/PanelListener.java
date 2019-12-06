@@ -48,6 +48,12 @@ public class PanelListener implements Listener {
             if (event.getRawSlot() >= 45 && event.getRawSlot() <= 54) {
                 event.setCancelled(true);
             } else {
+
+                System.out.println("Amount 1: " + event.getInventory().getItem(event.getRawSlot()).getAmount());
+                System.out.println("Amount 2: " + event.getCursor().getAmount());
+                System.out.println("Amount 3: " + event.getCurrentItem().getAmount());
+
+
                 return;
             }
 
