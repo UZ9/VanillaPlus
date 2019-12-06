@@ -44,7 +44,6 @@ public class Generator extends Structure {
                 int energyPerStructure = getEnergy() / structureCount;
 
                 for (Structure structure : getStructures()) {
-                    System.out.println("Energy for external structure: " + structure.getEnergy() + "/" + structure.getMaxEnergy());
 
 
                     if (structure.getMaxEnergy() - structure.getEnergy() < energyPerStructure) {

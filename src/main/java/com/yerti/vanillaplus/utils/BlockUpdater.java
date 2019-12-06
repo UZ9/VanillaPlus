@@ -36,8 +36,6 @@ public class BlockUpdater {
 
     private void updateMachines() {
 
-        System.out.println(machines.size());
-
 
         for (Map.Entry<Location, Structure> entry : machines.entrySet()) {
 

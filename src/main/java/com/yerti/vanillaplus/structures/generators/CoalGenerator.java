@@ -45,7 +45,6 @@ public class CoalGenerator extends Generator {
             for (Location location : nearbyBlocks) {
                 if (BlockUpdater.machines.containsKey(location)) {
                     if (!(BlockUpdater.machines.get(location) instanceof Generator)) {
-                        System.out.println("Found!");
                         addStructure(BlockUpdater.machines.get(location));
                     }
                 }
@@ -71,7 +70,6 @@ public class CoalGenerator extends Generator {
         for (Location location : nearbyBlocks) {
             if (BlockUpdater.machines.containsKey(location)) {
                 if (!(BlockUpdater.machines.get(location) instanceof Generator)) {
-                    System.out.println("Found!");
                     addStructure(BlockUpdater.machines.get(location));
                 }
             }
@@ -119,8 +117,6 @@ public class CoalGenerator extends Generator {
             generator.setBurnTime((short) 0);
         } else if (inventory.getFuel().getType().equals(Material.COAL) || inventory.getFuel().getType().equals(Material.COAL_BLOCK)) {
 
-            System.out.println("Energy: " + getEnergy());
-            System.out.println("Max Energy: " + getMaxEnergy());
 
             if (getEnergy() < getMaxEnergy() - 1000) {
 

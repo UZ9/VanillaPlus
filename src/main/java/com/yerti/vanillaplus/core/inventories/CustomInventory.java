@@ -1,6 +1,7 @@
 package com.yerti.vanillaplus.core.inventories;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -26,12 +27,11 @@ public class CustomInventory implements InventoryHolder {
      */
     public CustomInventory(InventoryHolder holder, int slots, String displayName, ItemStack backgroundItem) {
         this.slots = slots;
-        this.displayName = displayName;
+        this.displayName = ChatColor.translateAlternateColorCodes('&', displayName);
         this.backgroundItem = backgroundItem;
         this.holder = holder;
 
-        inventory = Bukkit.createInventory(holder, slots, displayName);
-        createBackground();
+        inventory = Bukkit.createInventory(holder, slots, ChatColor.translateAlternateColorCodes('&', displayName));
     }
 
     /**
@@ -42,6 +42,12 @@ public class CustomInventory implements InventoryHolder {
             if (inventory.getContents()[i] == null || inventory.getContents()[i].getType().equals(Material.AIR)) {
                 inventory.setItem(i, backgroundItem);
             }
+        }
+    }
+
+    public void fill(int start, int end, ItemStack stack) {
+        for (int i = start; i < end; i++) {
+            inventory.setItem(i, stack);
         }
     }
 
