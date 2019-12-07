@@ -100,6 +100,11 @@ public class CustomItemStack extends ItemStack {
         return this;
     }
 
+    public String getLore(int index) {
+        ItemMeta meta = getItemMeta();
+        return meta.getLore().get(index);
+    }
+
     /**
      * Adds lore to a CustomItemStack
      * @param text
@@ -118,6 +123,30 @@ public class CustomItemStack extends ItemStack {
 
         if (lore == null) lore = new ArrayList<>();
         lore.add(ChatColor.translateAlternateColorCodes('&', text));
+        meta.setLore(lore);
+        setItemMeta(meta);
+
+        return this;
+    }
+
+    /**
+     * Adds lore to a CustomItemStack
+     * @param text
+     * @return
+     */
+    public CustomItemStack lore(int index, String text) {
+        ItemMeta meta = getItemMeta();
+
+
+        if (meta.getLore() == null) {
+            meta.setLore(new ArrayList<>());
+        }
+
+        List<String> lore = meta.getLore() == null ? new ArrayList<>() : meta.getLore();
+
+
+        if (lore == null) lore = new ArrayList<>();
+        lore.set(index, ChatColor.translateAlternateColorCodes('&', text));
         meta.setLore(lore);
         setItemMeta(meta);
 
@@ -147,6 +176,11 @@ public class CustomItemStack extends ItemStack {
         ItemMeta meta = getItemMeta();
         meta.setLore(new ArrayList<>());
         setItemMeta(meta);
+        return this;
+    }
+
+    public CustomItemStack amount(int amount) {
+        this.setAmount(amount);
         return this;
     }
 

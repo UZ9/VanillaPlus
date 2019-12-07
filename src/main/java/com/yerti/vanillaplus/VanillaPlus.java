@@ -25,7 +25,7 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 public class VanillaPlus extends YertiPlugin {
 
-    public static GeneratorList customConfig;
+    //public static GeneratorList customConfig;
     public static File customConfigFile;
 
     public static VanillaPlus instance;
@@ -53,7 +53,7 @@ public class VanillaPlus extends YertiPlugin {
         }
 
         //Custom generator for Machines stored in machines.yml
-        customConfig = new GeneratorList(this);
+        //customConfig = new GeneratorList(this);
 
         //Messages for config.yml
         Messages messages = new Messages(this);

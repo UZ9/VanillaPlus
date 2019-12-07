@@ -17,12 +17,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -49,23 +49,43 @@ public class PanelListener implements Listener {
         }
     }
 
+    //TODO: Redo this because it's wack
     @EventHandler
     public void onGUIClick(InventoryClickEvent event) {
         if (event.getInventory() == null) return;
         if (event.getRawSlot() == -999) return;
+        System.out.println("epic1");
+        //if (event.getRawSlot() >= 54) return;
+
+        if (event.getWhoClicked().getOpenInventory().getTopInventory().getHolder() instanceof InventoryStorage) {
+            if (event.getRawSlot() >= 54) {
+
+                if (event.isShiftClick()) {
+                    event.setCancelled(true);
+                    return;
+                }
+
+                return;
+            }
+
+
+        }
         if (event.getRawSlot() >= 54) return;
-        if (event.getInventory().getHolder() == null) return;
-        if (event.getInventory().getHolder() instanceof InventoryStorage) {
+        if (event.getWhoClicked().getOpenInventory() == null) return;
+
+        if (event.getInventory().getHolder() instanceof InventoryStorage || ((Player) event.getWhoClicked()).getOpenInventory().getTopInventory().getHolder() instanceof InventoryStorage) {
+            if (event.isShiftClick()) return;
+            System.out.println("valid");
             Player player = (Player) event.getWhoClicked();
 
+            event.setCancelled(true);
+            System.out.println("EVENT WAS CANCELLED");
 
             if (event.getRawSlot() >= 45 && event.getRawSlot() < 54) {
                 event.setCancelled(true);
             } else {
 
-                if (event.getCurrentItem() == null) {
-                    return;
-                }
+                System.out.println(event.getAction().toString());
 
 
                 if (event.getAction() == InventoryAction.PLACE_ALL || event.getAction() == InventoryAction.PLACE_SOME || event.getAction() == InventoryAction.PLACE_ONE) {
@@ -78,80 +98,65 @@ public class PanelListener implements Listener {
 
                     player.setItemOnCursor(null);
 
-                    Inventory inventory = event.getInventory();
+                    Inventory inventory = Bukkit.createInventory(event.getInventory().getHolder(), event.getInventory().getSize(), event.getInventory().getName());
+                    inventory.setContents(event.getInventory().getContents());
 
 
-                    for (ItemStack item : inventory.getContents()) {
-                        if (item == null) continue;
+                    Bukkit.getScheduler().runTaskAsynchronously(VanillaPlus.instance, () -> {
+                        for (ItemStack item : inventory.getContents()) {
+                            if (item == null) continue;
 
-                        if (item.getType().equals(stack.getType())) {
-                            ItemMeta meta = item.getItemMeta();
-                            List<String> lore = item.getItemMeta().getLore();
-                            if (lore == null) {
-                                lore = new ArrayList<>();
-                                lore.add(ChatColor.RED + "Amount: " + stack.getAmount());
-                            }
-
-                            if (lore.get(0).startsWith(ChatColor.RED + "Amount: ")) {
-                                lore.set(0, ChatColor.RED + "Amount: " + (Integer.parseInt(lore.get(0).replaceAll("[\\D]", "")) + stack.getAmount()));
-                            } else {
-                                lore.add(0, ChatColor.RED + "Amount: " + (Integer.parseInt(lore.get(0).replaceAll("[\\D]", "")) + stack.getAmount()));
-                            }
-
-
-                            if (item.getAmount() < 64) {
-                                if (item.getAmount() + stack.getAmount() > 64) {
-                                    item.setAmount(64);
+                            if (item.getType().equals(stack.getType())) {
+                                CustomItemStack c = new CustomItemStack(item);
+                                String lore = ChatColor.RED + "Amount: " + (Integer.parseInt(c.getLore(0).replaceAll("[\\D]", "")) + stack.getAmount());
+                                if (c.getItemMeta().hasLore()) {
+                                    c.lore(0, lore);
                                 } else {
-                                    item.setAmount(item.getAmount() + stack.getAmount());
+                                    c.lore(lore);
                                 }
 
-                            }
 
-                            meta.setLore(lore);
-                            item.setItemMeta(meta);
-                            found.set(true);
-                        }
-                    }
+                                if (item.getAmount() < 64) {
+                                    if (item.getAmount() + stack.getAmount() > 64) {
+                                        item.setAmount(64);
+                                    } else {
+                                        item.setAmount(item.getAmount() + stack.getAmount());
+                                    }
 
-                    if (!found.get()) {
-                        if (stack.getType() != null) {
-                            if (stack.getType() != Material.AIR) {
+                                }
 
-                                ItemStack stack1 = new ItemStack(stack.getType(), stack.getAmount());
-                                ItemMeta meta = stack1.getItemMeta();
-                                if (!stack1.hasItemMeta()) meta = Bukkit.getItemFactory().getItemMeta(stack.getType());
-
-
-                                List<String> lore = meta.getLore();
-                                if (lore == null) lore = new ArrayList<>();
-
-
-                                lore.add(ChatColor.RED + "Amount: " + stack.getAmount());
-                                meta.setLore(lore);
-                                stack1.setItemMeta(meta);
-
-                                inventory.addItem(stack1);
+                                item.setItemMeta(c.getItemMeta());
+                                found.set(true);
                             }
                         }
 
+                        if (!found.get()) {
+                            if (stack.getType() != null) {
+                                if (stack.getType() != Material.AIR) {
 
-                    }
+                                    CustomItemStack stack1 = new CustomItemStack(stack).lore(ChatColor.RED + "Amount: " + stack.getAmount());
+                                    inventory.addItem(stack1);
 
-                    System.out.println("Check 2");
+                                }
+                            }
 
-                    event.setCancelled(true);
 
-                    player.setItemInHand(null);
+                        }
+                        System.out.println("Check 2");
 
-                    player.getOpenInventory().getTopInventory().setContents(inventory.getContents());
+
+                        player.setItemInHand(null);
+
+                        Bukkit.getScheduler().runTaskLaterAsynchronously(VanillaPlus.instance, () -> player.getOpenInventory().getTopInventory().setContents(inventory.getContents()), 2L);
+
+                    });
 
 
                 }
 
+                //TODO: Redo this
                 if (event.getAction() == InventoryAction.PICKUP_HALF) {
                     int amount = (int) Math.ceil(event.getCurrentItem().getAmount() / 2.);
-                    System.out.println("Amount 3 half: " + amount);
 
                     ItemMeta meta = event.getCurrentItem().getItemMeta();
                     List<String> lore = meta.getLore();
@@ -161,32 +166,65 @@ public class PanelListener implements Listener {
                     ItemStack stack = event.getCurrentItem();
                     stack.setItemMeta(meta);
                     System.out.println(stack.getItemMeta().getLore().toString());
-                    player.getOpenInventory().getTopInventory().setItem(event.getRawSlot(), stack);
+                    event.getCurrentItem().setItemMeta(meta);
 
-                    if (StringUtils.parse(event.getCurrentItem().getItemMeta().getLore().get(0)) - amount > 0) {
                         System.out.println("Yes");
-                        System.out.println(MathUtils.clamp(StringUtils.parse(event.getCurrentItem().getItemMeta().getLore().get(0)) - amount, 0, 64));
+                        System.out.println(MathUtils.clamp(StringUtils.parse(event.getCurrentItem().getItemMeta().getLore().get(0)), 0, 64));
 
-                        Bukkit.getScheduler().runTaskLaterAsynchronously(VanillaPlus.instance, () -> event.getCurrentItem().setAmount(MathUtils.clamp(StringUtils.parse(event.getCurrentItem().getItemMeta().getLore().get(0)) - amount, 0, 64)), 1L);
-                    }
+                        Bukkit.getScheduler().runTaskLaterAsynchronously(VanillaPlus.instance, () -> event.getCurrentItem().setAmount(MathUtils.clamp(StringUtils.parse(event.getCurrentItem().getItemMeta().getLore().get(0)), 0, 64)), 1L);
 
 
-                    if (player.getItemOnCursor() != null && player.getItemOnCursor().getType() != Material.AIR) {
+
+                    Bukkit.getScheduler().runTaskLaterAsynchronously(VanillaPlus.instance, () -> {
+
 
                         System.out.println("foundsssss");
-                        Bukkit.getScheduler().runTaskLaterAsynchronously(VanillaPlus.instance, () -> player.setItemOnCursor(new CustomItemStack(player.getItemOnCursor()).stripLore()), 1L);
-                    }
+                        player.setItemOnCursor(new CustomItemStack(event.getCurrentItem()).stripLore().amount(event.getCurrentItem().getAmount()));
 
-                    /*ItemStack s = player.getItemOnCursor();
-                    if (s != null && event.getCursor().getType() != Material.AIR) {
-                        ItemMeta meta1 = s.getItemMeta();
-                        meta1.setLore(new ArrayList<>());
-                        s.setItemMeta(meta1);
-                    }*/
+                    }, 1L);
 
 
-                } else {
-                    System.out.println("Amount 3: " + event.getCurrentItem().getAmount());
+                } else if (event.getAction() == InventoryAction.PICKUP_ALL) {
+                    Bukkit.getScheduler().runTaskLater(VanillaPlus.instance, () -> {
+
+                        if (StringUtils.parse(event.getCurrentItem().getItemMeta().getLore().get(0)) <= 64) {
+                            System.out.println("Found, trying to do it now");
+
+                            player.setItemOnCursor(new CustomItemStack(event.getCurrentItem()).stripLore());
+                            event.getCurrentItem().setType(Material.AIR);
+                            event.getInventory().setItem(event.getRawSlot(), new ItemStack(Material.AIR));
+
+                            return;
+                        }
+
+                        int amount = event.getCurrentItem().getAmount();
+                        System.out.println("amount because why not: " + (StringUtils.parse(event.getCurrentItem().getItemMeta().getLore().get(0)) - amount));
+
+                        ItemStack stack = new CustomItemStack(event.getCurrentItem()).lore(0, ChatColor.RED + "Amount: " + (StringUtils.parse(event.getCurrentItem().getItemMeta().getLore().get(0)) - amount));
+                        event.getCurrentItem().setItemMeta(stack.getItemMeta());
+                        //player.getOpenInventory().getTopInventory().setItem(event.getRawSlot(), stack);
+
+
+                        //if (StringUtils.parse(event.getCurrentItem().getItemMeta().getLore().get(0)) - amount > 0) {
+                        System.out.println("Yes");
+
+
+                        System.out.println(MathUtils.clamp(StringUtils.parse(event.getCurrentItem().getItemMeta().getLore().get(0)) - amount, 0, 64));
+
+
+                        Bukkit.getScheduler().runTaskLaterAsynchronously(VanillaPlus.instance, () -> event.getCurrentItem().setAmount(MathUtils.clamp(StringUtils.parse(event.getCurrentItem().getItemMeta().getLore().get(0)), 0, 64)), 1L);
+
+
+                        //}
+
+
+                        Bukkit.getScheduler().runTaskLaterAsynchronously(VanillaPlus.instance, () -> {
+                            player.setItemOnCursor(new CustomItemStack(event.getCurrentItem()).amount(amount).stripLore());
+                        }, 0L);
+
+
+                    }, 0L);
+
                 }
 
 
@@ -219,6 +257,16 @@ public class PanelListener implements Listener {
                 //event.getWhoClicked().getOpenInventory().getTopInventory().setContents(storage.get((Player) event.getWhoClicked()).getContents());
 
             }
+        }
+    }
+
+    @EventHandler
+    public void onDragEvent(InventoryDragEvent event) {
+        if (event.getInventory() == null) return;
+        if (event.getInventory().getHolder() == null) return;
+        if (event.getWhoClicked().getOpenInventory() == null) return;
+        if (event.getInventory().getHolder() instanceof InventoryStorage || (event.getWhoClicked()).getOpenInventory().getTopInventory().getHolder() instanceof InventoryStorage) {
+            event.setCancelled(true);
         }
     }
 

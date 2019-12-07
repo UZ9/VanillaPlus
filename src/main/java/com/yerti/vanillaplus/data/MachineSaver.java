@@ -75,22 +75,21 @@ public class MachineSaver {
 
 
                     ResultSet test = c.executeQuery("select * from machines where world = '" + world + "' and location  = '" + serializeLocation(location) + "'");
-                    c.close();
 
                     if (test.next()) {
                         test.close();
 
-                        Statement statement = MachineSaver.this.connection.createStatement();
-                        statement.executeUpdate("update machines set vu = " + structure.getEnergy() + " where world = '" + world + "' and location = '" + serializeLocation(location) + "';");
+                        c.executeUpdate("update machines set vu = " + structure.getEnergy() + " where world = '" + world + "' and location = '" + serializeLocation(location) + "';");
 
-                        statement.close();
                     } else {
                         test.close();
-                        Statement statement = MachineSaver.this.connection.createStatement();
-                        statement.executeUpdate("insert into machines(world, location, vu, type) values ('" + world + "', '" + serializeLocation(location) + "', " + structure.getEnergy() + ", '" + structure.getType() + "')");
 
-                        statement.close();
+                        c.executeUpdate("insert into machines(world, location, vu, type) values ('" + world + "', '" + serializeLocation(location) + "', " + structure.getEnergy() + ", '" + structure.getType() + "')");
+
                     }
+
+                    c.close();
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -148,8 +147,9 @@ public class MachineSaver {
             }
 
 
-            statement.close();
             set.close();
+            statement.close();
+
 
 
 

@@ -16,7 +16,7 @@ public class BlockUpdater {
 
     Plugin pl;
 
-    private GeneratorList customConfig = VanillaPlus.customConfig;
+    //private GeneratorList customConfig = VanillaPlus.customConfig;
     public BlockUpdater(Plugin pl) {
         this.pl = pl;
 

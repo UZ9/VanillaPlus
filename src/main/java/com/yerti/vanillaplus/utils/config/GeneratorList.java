@@ -10,6 +10,12 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * @deprecated
+ * SQL now used instead of flat file
+ * Gonna keep this here in case I need it later for more options.
+ */
+@Deprecated
 public class GeneratorList {
 
     private FileConfiguration customConfig;
