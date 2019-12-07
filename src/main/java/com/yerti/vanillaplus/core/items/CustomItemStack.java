@@ -59,6 +59,8 @@ public class CustomItemStack extends ItemStack {
      * @param glowing Boolean for whether the item should be glowing
      */
     public CustomItemStack(Material type, int amount, String displayName, boolean glowing) {
+        super(type, amount);
+
 
         this.type = type;
         this.amount = amount;
@@ -106,7 +108,12 @@ public class CustomItemStack extends ItemStack {
     public CustomItemStack lore(String text) {
         ItemMeta meta = getItemMeta();
 
-        List<String> lore = meta.getLore();
+
+        if (meta.getLore() == null) {
+            meta.setLore(new ArrayList<>());
+        }
+
+        List<String> lore = meta.getLore() == null ? new ArrayList<>() : meta.getLore();
 
 
         if (lore == null) lore = new ArrayList<>();
@@ -133,6 +140,13 @@ public class CustomItemStack extends ItemStack {
 
     public CustomItemStack damage(int damage) {
         setDurability((short) damage);
+        return this;
+    }
+
+    public CustomItemStack stripLore() {
+        ItemMeta meta = getItemMeta();
+        meta.setLore(new ArrayList<>());
+        setItemMeta(meta);
         return this;
     }
 

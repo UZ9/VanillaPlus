@@ -131,6 +131,8 @@ public class VanillaPlus extends YertiPlugin {
 
             //MachineUtils.updateMachineConfig(structure.getType(), structure.getMachineID(), structure.getEnergy());
         }
+
+        machineSaver.close();
     }
 
 

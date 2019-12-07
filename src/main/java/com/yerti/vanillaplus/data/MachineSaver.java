@@ -35,6 +35,7 @@ public class MachineSaver {
             statement.execute("CREATE TABLE IF NOT EXISTS machines(world varchar(255), location varchar(255), vu decimal, type tinytext);");
             statement.close();
 
+
         } catch (Exception e) {
             e.printStackTrace();;
         }
@@ -66,7 +67,7 @@ public class MachineSaver {
 
         try {
 
-            reopen();
+
 
 
                 try {
@@ -74,24 +75,21 @@ public class MachineSaver {
 
 
                     ResultSet test = c.executeQuery("select * from machines where world = '" + world + "' and location  = '" + serializeLocation(location) + "'");
-                    connection.close();
+                    c.close();
 
                     if (test.next()) {
                         test.close();
-                        c.close();
 
-                        reopen();
                         Statement statement = MachineSaver.this.connection.createStatement();
                         statement.executeUpdate("update machines set vu = " + structure.getEnergy() + " where world = '" + world + "' and location = '" + serializeLocation(location) + "';");
-                        connection.close();
 
+                        statement.close();
                     } else {
                         test.close();
-                        c.close();
-                        reopen();
                         Statement statement = MachineSaver.this.connection.createStatement();
                         statement.executeUpdate("insert into machines(world, location, vu, type) values ('" + world + "', '" + serializeLocation(location) + "', " + structure.getEnergy() + ", '" + structure.getType() + "')");
-                        connection.close();
+
+                        statement.close();
                     }
 
                 } catch (Exception e) {
@@ -115,7 +113,6 @@ public class MachineSaver {
     public void removeMachine(Structure structure) {
         Bukkit.getScheduler().runTaskAsynchronously(VanillaPlus.instance, () -> {
            try {
-               reopen();
                Statement statement = MachineSaver.this.connection.createStatement();
                statement.execute("DELETE FROM 'machines' WHERE world = '" + structure.getLoc().getWorld().getName() + "' AND location = '" + serializeLocation(structure.getLoc()) + "'");
                statement.close();
@@ -152,6 +149,7 @@ public class MachineSaver {
 
 
             statement.close();
+            set.close();
 
 
 
@@ -164,8 +162,16 @@ public class MachineSaver {
 
     }
 
+    public void close() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     //I don't know why but the sql kept randomly locking until I put this here, either I messed something up or it magically worked before
-    private void reopen() {
+    /*private void reopen() {
         try {
             if (!connection.isClosed()) connection.close();
         } catch (SQLException e) {
@@ -184,7 +190,8 @@ public class MachineSaver {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
+    }*/
+
 
     private String serializeLocation(Location location) {
         return (location.getX() + ";;" + location.getY() + ";;" + location.getZ());
