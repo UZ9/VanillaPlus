@@ -117,4 +117,8 @@ public class InventoryStorage implements InventoryHolder {
     public Inventory getInventory() {
         return inventories.get(0).getInventory();
     }
+
+    public List<CustomInventory> getInventories() {
+        return inventories;
+    }
 }

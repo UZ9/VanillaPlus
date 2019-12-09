@@ -28,7 +28,6 @@ public class EnergyListener implements Listener {
             if (BlockUpdater.machines.containsKey(location)) {
                 if (BlockUpdater.machines.get(location) instanceof Generator) {
                     Generator generator = (Generator) BlockUpdater.machines.get(location);
-                    System.out.println("yeet");
                     generator.addStructure(event.getStructure());
                 }
             }

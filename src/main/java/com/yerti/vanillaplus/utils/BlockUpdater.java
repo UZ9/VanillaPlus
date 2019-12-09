@@ -20,7 +20,7 @@ public class BlockUpdater {
     public BlockUpdater(Plugin pl) {
         this.pl = pl;
 
-        VanillaPlus.instance.machineSaver.getStructures();
+        VanillaPlus.getMachineSaver().getStructures();
         updateMachines();
 
     }

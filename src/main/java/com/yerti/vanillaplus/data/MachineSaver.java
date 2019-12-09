@@ -23,7 +23,7 @@ public class MachineSaver {
         try {
             Class.forName("org.sqlite.JDBC");
 
-            final File file = new File(VanillaPlus.instance.getDataFolder(), "machines.sqlite");
+            final File file = new File(VanillaPlus.getInstance().getDataFolder(), "machines.sqlite");
 
             if (!file.getParentFile().exists()) {
                 file.getParentFile().mkdir();
@@ -40,7 +40,7 @@ public class MachineSaver {
             e.printStackTrace();;
         }
 
-        Bukkit.getScheduler().runTaskTimer(VanillaPlus.instance, () -> {
+        Bukkit.getScheduler().runTaskTimer(VanillaPlus.getInstance(), () -> {
             for (Structure structure : BlockUpdater.machines.values()) {
                 saveMachineAsync(structure);
             }
@@ -50,7 +50,7 @@ public class MachineSaver {
 
     public void saveMachineAsync(Structure structure) {
 
-        Bukkit.getScheduler().runTaskAsynchronously(VanillaPlus.instance, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(VanillaPlus.getInstance(), () -> {
             saveMachineSync(structure);
         });
 
@@ -110,7 +110,7 @@ public class MachineSaver {
     }
 
     public void removeMachine(Structure structure) {
-        Bukkit.getScheduler().runTaskAsynchronously(VanillaPlus.instance, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(VanillaPlus.getInstance(), () -> {
            try {
                Statement statement = MachineSaver.this.connection.createStatement();
                statement.execute("DELETE FROM 'machines' WHERE world = '" + structure.getLoc().getWorld().getName() + "' AND location = '" + serializeLocation(structure.getLoc()) + "'");

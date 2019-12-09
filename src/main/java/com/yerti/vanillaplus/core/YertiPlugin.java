@@ -10,6 +10,7 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -17,6 +18,8 @@ import org.bukkit.plugin.java.JavaPlugin;
  * Main class extends YertiPlugin (which then extends JavaPlugin
  */
 public class YertiPlugin extends JavaPlugin {
+
+    private static Plugin hookedPlugin;
 
     /**
      * Loads needed resources
@@ -37,6 +40,14 @@ public class YertiPlugin extends JavaPlugin {
 
     protected void load() {
         getServer().getPluginManager().registerEvents(new ModelProtection(), this);
+    }
+
+    public static Plugin getHookedPlugin() {
+        return hookedPlugin;
+    }
+
+    public static void addHookedPlugin(Plugin plugin) {
+        hookedPlugin = plugin;
     }
 
 }

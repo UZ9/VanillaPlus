@@ -12,7 +12,7 @@ public class Cooldown {
 
     public Cooldown(int seconds) {
         this.seconds = seconds;
-        task = Bukkit.getScheduler().runTaskTimerAsynchronously(VanillaPlus.instance, () -> {
+        task = Bukkit.getScheduler().runTaskTimerAsynchronously(YertiPlugin.getHookedPlugin(), () -> {
             if (seconds == 0) stop();
             this.seconds--;
         }, 0L, 20L);

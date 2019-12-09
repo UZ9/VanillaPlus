@@ -36,7 +36,7 @@ public class CraftingTerminal extends Structure {
     public CraftingTerminal(Location loc, String type, Integer maxEnergy, Integer energy) {
         super(loc, type, maxEnergy, energy);
 
-        setHologram(HologramsAPI.createHologram(VanillaPlus.instance, new Location(getLoc().getWorld(), getLoc().getX() + 0.5, getLoc().getY() + 2, getLoc().getZ() + 0.5)));
+        setHologram(HologramsAPI.createHologram(VanillaPlus.getInstance(), new Location(getLoc().getWorld(), getLoc().getX() + 0.5, getLoc().getY() + 2, getLoc().getZ() + 0.5)));
         line = getHologram().appendTextLine(ChatColor.RED + "" + new DecimalFormat("##.#").format(getEnergy() / 1000.) + "/" + new DecimalFormat("##.#").format(getMaxEnergy() / 1000.) + "k VU");
         BlockUpdater.machines.put(loc, this);
     }
@@ -47,7 +47,7 @@ public class CraftingTerminal extends Structure {
     public void create() {
 
         BlockUpdater.machines.put(getLoc(), this);
-        setHologram(HologramsAPI.createHologram(VanillaPlus.instance, new Location(getLoc().getWorld(), getLoc().getX() + 0.5, getLoc().getY() + 2, getLoc().getZ() + 0.5)));
+        setHologram(HologramsAPI.createHologram(VanillaPlus.getInstance(), new Location(getLoc().getWorld(), getLoc().getX() + 0.5, getLoc().getY() + 2, getLoc().getZ() + 0.5)));
         line = getHologram().appendTextLine(ChatColor.RED + "" + new DecimalFormat("##.#").format(getEnergy() / 1000.) + "k/" + new DecimalFormat("##.#").format(getMaxEnergy() / 1000.) + "k VU");
 
         model.addArmorStand(new CustomModelPart(getLoc().clone().add(0.5, 0.25, 0.5)).material(new ItemStack(Material.SEA_LANTERN)).small(true).gravity(false));
@@ -74,7 +74,7 @@ public class CraftingTerminal extends Structure {
         }
 
         model.destroy();
-        VanillaPlus.instance.machineSaver.removeMachine(this);
+        VanillaPlus.getMachineSaver().removeMachine(this);
 
 
     }

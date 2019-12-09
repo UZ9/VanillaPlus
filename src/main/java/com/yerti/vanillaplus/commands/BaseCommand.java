@@ -48,7 +48,7 @@ public class BaseCommand {
                 .onClose(player -> player.sendMessage("Success"))
                 .onComplete((player, text) -> AnvilGUI.Response.close())
 
-                .plugin(VanillaPlus.instance)
+                .plugin(VanillaPlus.getInstance())
                 .text("Search Items")
                 .open((Player) sender);
     }

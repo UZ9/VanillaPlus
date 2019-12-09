@@ -179,6 +179,15 @@ public class CustomItemStack extends ItemStack {
         return this;
     }
 
+    public CustomItemStack removeLore(int index) {
+        ItemMeta meta = getItemMeta();
+        List<String> lore = meta.getLore();
+        lore.remove(index);
+        meta.setLore(lore);
+        setItemMeta(meta);
+        return this;
+    }
+
     public CustomItemStack amount(int amount) {
         this.setAmount(amount);
         return this;

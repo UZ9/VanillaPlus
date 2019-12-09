@@ -21,7 +21,7 @@ import java.util.List;
 
 public class CoalGenerator extends Generator {
 
-    CustomModel model = new CustomModel();
+
 
 
     public CoalGenerator(Location loc) {
@@ -35,70 +35,20 @@ public class CoalGenerator extends Generator {
     public CoalGenerator(Location loc, String type, Integer maxEnergy, Integer energy) {
         super(loc, type, maxEnergy, energy);
 
-        setHologram(HologramsAPI.createHologram(VanillaPlus.instance, new Location(getLoc().getWorld(), getLoc().getX() + 0.5, getLoc().getY() + 2, getLoc().getZ() + 0.5)));
+        setHologram(HologramsAPI.createHologram(VanillaPlus.getInstance(), new Location(getLoc().getWorld(), getLoc().getX() + 0.5, getLoc().getY() + 2, getLoc().getZ() + 0.5)));
         line = getHologram().appendTextLine(ChatColor.RED + "" + new DecimalFormat("##.#").format(getEnergy() / 1000.) + "/" + new DecimalFormat("##.#").format(getMaxEnergy() / 1000.) + "k VU");
         BlockUpdater.machines.put(loc, this);
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(VanillaPlus.instance, () -> {
 
-            List<Location> nearbyBlocks = BlockUtils.getBlocks(getLoc(), 5);
-            for (Location location : nearbyBlocks) {
-                if (BlockUpdater.machines.containsKey(location)) {
-                    if (!(BlockUpdater.machines.get(location) instanceof Generator)) {
-                        addStructure(BlockUpdater.machines.get(location));
-                    }
-                }
-
-
-            }
-        }, 20L);
     }
 
 
     @Override
     public void create() {
-
-        BlockUpdater.machines.put(getLoc(), this);
-        setHologram(HologramsAPI.createHologram(VanillaPlus.instance, new Location(getLoc().getWorld(), getLoc().getX() + 0.5, getLoc().getY() + 2, getLoc().getZ() + 0.5)));
-        line = getHologram().appendTextLine(ChatColor.RED + "" + new DecimalFormat("##.#").format(getEnergy() / 1000.) + "k/" + new DecimalFormat("##.#").format(getMaxEnergy() / 1000.) + "k VU");
+        super.create();
 
         model.addArmorStand(new CustomModelPart(getLoc().clone().add(0.5, 0.25, 0.5)).material(new ItemStack(Material.REDSTONE_BLOCK)).small(true).gravity(false));
         model.addArmorStand(new CustomModelPart(getLoc().clone().add(0.5, -0.5, 0.5)).material(new ItemStack(Material.GLASS)).gravity(false));
-
-        List<Location> nearbyBlocks = BlockUtils.getBlocks(getLoc(), 5);
-
-        for (Location location : nearbyBlocks) {
-            if (BlockUpdater.machines.containsKey(location)) {
-                if (!(BlockUpdater.machines.get(location) instanceof Generator)) {
-                    addStructure(BlockUpdater.machines.get(location));
-                }
-            }
-
-
-        }
-
-    }
-
-    @Override
-    public void destroy() {
-        getHologram().delete();
-        BlockUpdater.machines.remove(getLoc());
-        //MachineUtils.removeMachineConfig("coalGenerators", getMachineID());
-
-        Collection<Entity> entities = getLoc().getWorld().getNearbyEntities(getLoc(), 1, 1, 1);
-
-        for (Entity entity : entities) {
-            if (entity instanceof ArmorStand) {
-                if (entity.getCustomName().equals("CustomModelPart")) {
-                    if (entity.getLocation().getX() == (getLoc().clone().add(0.5, 0, 0).getX()))
-                        entity.remove();
-                }
-            }
-        }
-
-        model.destroy();
-        VanillaPlus.instance.machineSaver.removeMachine(this);
-
 
     }
 
@@ -151,11 +101,12 @@ public class CoalGenerator extends Generator {
 
         }
 
+        //Super method for handling energy output to other machines
         handleEnergy();
 
 
 
-
+        //Update hologram
         line.setText(ChatColor.RED + "" + new DecimalFormat("##.#").format(getEnergy() / 1000.) + "k/" + new DecimalFormat("##.#").format(getMaxEnergy() / 1000.) + "k VU");
 
     }
