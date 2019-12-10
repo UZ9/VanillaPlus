@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 
 public enum Lang {
-    
+
     NO_PERMISSION("&cYou don't have permission to do that.");
 
     String message;

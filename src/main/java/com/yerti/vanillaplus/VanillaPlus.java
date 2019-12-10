@@ -8,6 +8,7 @@ import com.yerti.vanillaplus.energy.EnergyListener;
 import com.yerti.vanillaplus.listeners.MachinePlaceListener;
 import com.yerti.vanillaplus.listeners.PanelListener;
 import com.yerti.vanillaplus.structures.Structure;
+import com.yerti.vanillaplus.structures.storage.CraftingTerminal;
 import com.yerti.vanillaplus.utils.BlockUpdater;
 import com.yerti.vanillaplus.config.Messages;
 import org.bukkit.Bukkit;
@@ -82,6 +83,10 @@ public class VanillaPlus extends YertiPlugin {
     public void onDisable() {
         for (Structure structure : BlockUpdater.machines.values()) {
             machineSaver.saveMachineSync(structure);
+
+            if (structure instanceof CraftingTerminal) {
+                machineSaver.savePanel((CraftingTerminal) structure);
+            }
         }
 
         //Close sql connection

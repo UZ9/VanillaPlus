@@ -9,6 +9,7 @@ import com.yerti.vanillaplus.core.utils.StringUtils;
 import com.yerti.vanillaplus.structures.Structure;
 import com.yerti.vanillaplus.structures.storage.CraftingTerminal;
 import com.yerti.vanillaplus.structures.storage.gui.InventoryStorage;
+import com.yerti.vanillaplus.structures.storage.gui.InventoryStorageHolder;
 import com.yerti.vanillaplus.utils.BlockUpdater;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -54,7 +55,7 @@ public class PanelListener implements Listener {
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        if (event.getInventory().getHolder() instanceof InventoryStorage) {
+        if (event.getInventory().getHolder() instanceof InventoryStorageHolder) {
             openTerminals.remove(event.getPlayer().getUniqueId());
         }
     }
@@ -65,7 +66,7 @@ public class PanelListener implements Listener {
         if (event.getInventory() == null) return;
         if (event.getRawSlot() == -999) return;
 
-        if (event.getWhoClicked().getOpenInventory().getTopInventory().getHolder() instanceof InventoryStorage) {
+        if (event.getWhoClicked().getOpenInventory().getTopInventory().getHolder() instanceof InventoryStorageHolder) {
             if (event.getRawSlot() >= 54) {
                 if (event.isShiftClick()) {
                     event.setCancelled(true);
@@ -78,7 +79,7 @@ public class PanelListener implements Listener {
         if (event.getRawSlot() >= 54) return;
         if (event.getWhoClicked().getOpenInventory() == null) return;
 
-        if (event.getInventory().getHolder() instanceof InventoryStorage || event.getWhoClicked().getOpenInventory().getTopInventory().getHolder() instanceof InventoryStorage) {
+        if (event.getInventory().getHolder() instanceof InventoryStorageHolder || event.getWhoClicked().getOpenInventory().getTopInventory().getHolder() instanceof InventoryStorageHolder) {
             if (event.isShiftClick()) return;
 
             Player player = (Player) event.getWhoClicked();
@@ -168,7 +169,7 @@ public class PanelListener implements Listener {
                         .open(player);
             }
 
-            if (event.getInventory().getItem(event.getRawSlot()).getType().equals(Material.STAINED_GLASS_PANE)) return;
+            if (event.getCurrentItem().getType().equals(Material.STAINED_GLASS_PANE)) return;
 
             if (event.getRawSlot() == 51) {
                 open(openTerminals.get(player.getUniqueId()), player, 1);
@@ -185,7 +186,7 @@ public class PanelListener implements Listener {
         if (event.getInventory() == null) return;
         if (event.getInventory().getHolder() == null) return;
         if (event.getWhoClicked().getOpenInventory() == null) return;
-        if (event.getInventory().getHolder() instanceof InventoryStorage || (event.getWhoClicked()).getOpenInventory().getTopInventory().getHolder() instanceof InventoryStorage) {
+        if (event.getInventory().getHolder() instanceof InventoryStorageHolder || (event.getWhoClicked()).getOpenInventory().getTopInventory().getHolder() instanceof InventoryStorageHolder) {
             event.setCancelled(true);
         }
     }

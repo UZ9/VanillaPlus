@@ -2,10 +2,12 @@ package com.yerti.vanillaplus.structures.storage.gui;
 
 import com.yerti.vanillaplus.core.inventories.CustomInventory;
 import com.yerti.vanillaplus.core.items.CustomItemStack;
+import com.yerti.vanillaplus.core.items.ItemStackUtils;
 import com.yerti.vanillaplus.core.menus.Pagination;
 import com.yerti.vanillaplus.core.utils.SkullUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -15,7 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class InventoryStorage implements InventoryHolder {
+public class InventoryStorage  {
 
     private final ItemStack leftArrow = new CustomItemStack(SkullUtils.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmQ2OWUwNmU1ZGFkZmQ4NGU1ZjNkMWMyMTA2M2YyNTUzYjJmYTk0NWVlMWQ0ZDcxNTJmZGM1NDI1YmMxMmE5In19fQ==")).name("&cPrevious Page");
     private final ItemStack rightArrow = new CustomItemStack(SkullUtils.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTliZjMyOTJlMTI2YTEwNWI1NGViYTcxM2FhMWIxNTJkNTQxYTFkODkzODgyOWM1NjM2NGQxNzhlZDIyYmYifX19")).name("&cNext Page");
@@ -24,6 +26,27 @@ public class InventoryStorage implements InventoryHolder {
 
     public static Map<UUID, Integer> pageNumber = new HashMap<>();
     private List<CustomInventory> inventories = new ArrayList<>();
+
+
+    public InventoryStorage(List<CustomInventory> inventories) {
+
+        System.out.println("SIZE OF INVENTORIES: " + inventories.size());
+
+        List<ItemStack> itemStacks = new ArrayList<>();
+
+
+        for (CustomInventory inventory : inventories) {
+            Collections.addAll(itemStacks, inventory.getInventory().getContents());
+        }
+
+        pagInit(itemStacks);
+
+
+
+
+
+    }
+
     public InventoryStorage() {
 
         List<ItemStack> stacks = new ArrayList<>();
@@ -76,7 +99,7 @@ public class InventoryStorage implements InventoryHolder {
         stacks.clear();
         System.out.println(pagination.totalPages());
         for (int i = 0; i < pagination.totalPages(); i++) {
-            CustomInventory newInventory = new CustomInventory(this, 54, "&cCrafting Terminal", new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
+            CustomInventory newInventory = new CustomInventory(new InventoryStorageHolder(), 54, "&cCrafting Terminal", new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
             newInventory.fill(45, 54, newInventory.getBackgroundItem());
 
 
@@ -113,12 +136,54 @@ public class InventoryStorage implements InventoryHolder {
     }
 
 
-    @Override
-    public Inventory getInventory() {
-        return inventories.get(0).getInventory();
-    }
-
     public List<CustomInventory> getInventories() {
         return inventories;
+    }
+
+    public void setInventories(List<CustomInventory> inventories) {
+        List<ItemStack> itemStacks = new ArrayList<>();
+
+        for (CustomInventory inventory : inventories) {
+            itemStacks.addAll(Arrays.asList(inventory.getInventory().getContents()));
+        }
+
+        inventories.clear();
+        pagInit(itemStacks);
+    }
+
+    public void pagInit(List<ItemStack> stacks) {
+        System.out.println("Calleda");
+        Pagination<ItemStack> pagination = new Pagination<>(54, stacks);
+
+
+        stacks.clear();
+        System.out.println(pagination.totalPages());
+        for (int i = 0; i < pagination.totalPages(); i++) {
+            System.out.println("yoink");
+            CustomInventory newInventory = new CustomInventory(new InventoryStorageHolder(), 54, "&cCrafting Terminal", new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
+            newInventory.fill(45, 54, newInventory.getBackgroundItem());
+
+
+
+            newInventory.getInventory().setItem(49, new CustomItemStack(Material.NAME_TAG, 1).name("&cSearch"));
+            System.out.println("doink");
+
+            if (i >= 1) newInventory.getInventory().setItem(47, leftArrow);
+            if (i < pagination.totalPages() - 1) newInventory.getInventory().setItem(51, rightArrow);
+
+            for (ItemStack stack : pagination.getPage(i)) {
+                if (stack.getType() == Material.AIR) continue;
+                System.out.println("ADDING " + stack.getType());
+                newInventory.getInventory().addItem(stack);
+                System.out.println("Finished");
+            }
+
+            System.out.println("stonks");
+
+            inventories.add(newInventory);
+        }
+
+        System.out.println("Finished successfully");
+
     }
 }
