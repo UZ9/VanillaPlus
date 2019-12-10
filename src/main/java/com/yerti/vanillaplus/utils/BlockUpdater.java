@@ -2,7 +2,6 @@ package com.yerti.vanillaplus.utils;
 
 import com.yerti.vanillaplus.VanillaPlus;
 import com.yerti.vanillaplus.structures.Structure;
-import com.yerti.vanillaplus.utils.config.GeneratorList;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;

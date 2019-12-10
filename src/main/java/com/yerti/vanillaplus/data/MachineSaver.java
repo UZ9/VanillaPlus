@@ -4,6 +4,7 @@ import com.google.gson.JsonParser;
 import com.yerti.vanillaplus.VanillaPlus;
 import com.yerti.vanillaplus.structures.Structure;
 import com.yerti.vanillaplus.structures.StructureType;
+import com.yerti.vanillaplus.structures.storage.CraftingTerminal;
 import com.yerti.vanillaplus.utils.BlockUpdater;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -33,6 +34,7 @@ public class MachineSaver {
 
             final Statement statement = this.connection.createStatement();
             statement.execute("CREATE TABLE IF NOT EXISTS machines(world varchar(255), location varchar(255), vu decimal, type tinytext);");
+            statement.execute("CREATE TABLE IF NOT EXISTS storageterminals(world varchar(255), location varchar(255), data text);");
             statement.close();
 
 
@@ -170,31 +172,13 @@ public class MachineSaver {
         }
     }
 
-    //I don't know why but the sql kept randomly locking until I put this here, either I messed something up or it magically worked before
-    /*private void reopen() {
-        try {
-            if (!connection.isClosed()) connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-        final File file = new File(VanillaPlus.instance.getDataFolder(), "machines.sqlite");
-
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdir();
-        }
-
-        try {
-            this.connection = DriverManager.getConnection("jdbc:sqlite:" + file.getAbsolutePath());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }*/
-
 
     private String serializeLocation(Location location) {
         return (location.getX() + ";;" + location.getY() + ";;" + location.getZ());
+    }
+
+    private void savePanel(CraftingTerminal terminal) {
+        
     }
 
 }

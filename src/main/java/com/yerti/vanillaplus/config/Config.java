@@ -1,4 +1,4 @@
-package com.yerti.vanillaplus.utils.config;
+package com.yerti.vanillaplus.config;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;

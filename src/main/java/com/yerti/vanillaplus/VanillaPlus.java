@@ -9,7 +9,7 @@ import com.yerti.vanillaplus.listeners.MachinePlaceListener;
 import com.yerti.vanillaplus.listeners.PanelListener;
 import com.yerti.vanillaplus.structures.Structure;
 import com.yerti.vanillaplus.utils.BlockUpdater;
-import com.yerti.vanillaplus.utils.config.Messages;
+import com.yerti.vanillaplus.config.Messages;
 import org.bukkit.Bukkit;
 
 public class VanillaPlus extends YertiPlugin {

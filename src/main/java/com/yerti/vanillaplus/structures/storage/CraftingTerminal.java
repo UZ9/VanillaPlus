@@ -6,6 +6,7 @@ import com.yerti.vanillaplus.core.entity.CustomModel;
 import com.yerti.vanillaplus.core.entity.CustomModelPart;
 import com.yerti.vanillaplus.core.inventories.CustomInventory;
 import com.yerti.vanillaplus.structures.Structure;
+import com.yerti.vanillaplus.structures.storage.gui.InventoryStorage;
 import com.yerti.vanillaplus.utils.BlockUpdater;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
@@ -22,7 +23,11 @@ import java.text.DecimalFormat;
 import java.util.Collection;
 
 public class CraftingTerminal extends Structure {
-    CustomModel model = new CustomModel();
+
+    private InventoryStorage storage = new InventoryStorage();
+
+
+    private CustomModel model = new CustomModel();
 
 
 
@@ -89,5 +94,9 @@ public class CraftingTerminal extends Structure {
 
 
 
+    }
+
+    public InventoryStorage getInventoryStorage() {
+        return storage;
     }
 }

@@ -6,6 +6,8 @@ import com.yerti.vanillaplus.core.items.CustomItemStack;
 import com.yerti.vanillaplus.core.titles.ActionBar;
 import com.yerti.vanillaplus.core.utils.MathUtils;
 import com.yerti.vanillaplus.core.utils.StringUtils;
+import com.yerti.vanillaplus.structures.Structure;
+import com.yerti.vanillaplus.structures.storage.CraftingTerminal;
 import com.yerti.vanillaplus.structures.storage.gui.InventoryStorage;
 import com.yerti.vanillaplus.utils.BlockUpdater;
 import org.bukkit.Bukkit;
@@ -15,36 +17,48 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryAction;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 public class PanelListener implements Listener {
 
-    InventoryStorage storage = new InventoryStorage();
+    private Map<UUID, CraftingTerminal> openTerminals = new HashMap<>();
+
 
     @EventHandler
     public void onPanelInteract(PlayerInteractEvent event) {
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (BlockUpdater.machines.containsKey(event.getClickedBlock().getLocation())) {
-                if (BlockUpdater.machines.get(event.getClickedBlock().getLocation()).getType().equalsIgnoreCase("CRAFTING_TERMINAL")) {
+                if (BlockUpdater.machines.get(event.getClickedBlock().getLocation()) instanceof CraftingTerminal) {
                     if (BlockUpdater.machines.get(event.getClickedBlock().getLocation()).getEnergy() == 0) {
                         ActionBar bar = new ActionBar("&cThis block doesn't have power!");
                         bar.sendToPlayer(event.getPlayer());
                         return;
                     }
 
-                    storage.open(event.getPlayer());
+                    ((CraftingTerminal) BlockUpdater.machines.get(event.getClickedBlock().getLocation())).getInventoryStorage().open(event.getPlayer());
+                    openTerminals.put(event.getPlayer().getUniqueId(), ((CraftingTerminal) BlockUpdater.machines.get(event.getClickedBlock().getLocation())));
 
 
                 }
             }
         }
     }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        if (event.getInventory().getHolder() instanceof InventoryStorage) {
+            openTerminals.remove(event.getPlayer().getUniqueId());
+        }
+    }
+
 
     @EventHandler
     public void onGUIClick(InventoryClickEvent event) {
@@ -79,14 +93,14 @@ public class PanelListener implements Listener {
 
                 player.setItemOnCursor(null);
 
-                Bukkit.getScheduler().runTaskAsynchronously(VanillaPlus.getInstance(), () -> {
-                    addItem(stack, event.getInventory());
 
-                    player.setItemInHand(null);
+                addItem(stack, event.getInventory());
 
-                    Bukkit.getScheduler().runTaskLaterAsynchronously(VanillaPlus.getInstance(), () -> player.getOpenInventory().getTopInventory().setContents(event.getInventory().getContents()), 2L);
+                player.setItemInHand(null);
 
-                });
+                Bukkit.getScheduler().runTaskLaterAsynchronously(VanillaPlus.getInstance(), () -> player.getOpenInventory().getTopInventory().setContents(event.getInventory().getContents()), 2L);
+
+
 
 
             }
@@ -157,9 +171,9 @@ public class PanelListener implements Listener {
             if (event.getInventory().getItem(event.getRawSlot()).getType().equals(Material.STAINED_GLASS_PANE)) return;
 
             if (event.getRawSlot() == 51) {
-                open(player, 1);
+                open(openTerminals.get(player.getUniqueId()), player, 1);
             } else if (event.getRawSlot() == 47) {
-                open(player, -1);
+                open(openTerminals.get(player.getUniqueId()), player, -1);
 
             }
         }
@@ -224,9 +238,12 @@ public class PanelListener implements Listener {
         }
     }
 
-    private void open(Player player, int increment) {
+    private void open(CraftingTerminal terminal, Player player, int increment) {
         InventoryStorage.pageNumber.put(player.getUniqueId(), InventoryStorage.pageNumber.get(player.getUniqueId()) + increment);
-        storage.open(player);
+
+
+
+        terminal.getInventoryStorage().open(player);
     }
 
 

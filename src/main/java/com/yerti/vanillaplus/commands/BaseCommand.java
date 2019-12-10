@@ -6,7 +6,7 @@ import com.yerti.vanillaplus.core.command.SubCommand;
 import com.yerti.vanillaplus.core.inventories.AnvilGUI;
 import com.yerti.vanillaplus.core.items.CustomItemStack;
 import com.yerti.vanillaplus.core.items.ItemMetaData;
-import com.yerti.vanillaplus.utils.config.Messages;
+import com.yerti.vanillaplus.config.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
