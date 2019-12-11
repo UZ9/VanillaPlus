@@ -188,12 +188,9 @@ public class ItemStackUtils {
                     meta.setLore(lore);
                 }
 
-                System.out.println("checking flags");
                 if (itemmeta.has("flags")) {
-                    System.out.println("found flags");
                     for (String flag : itemmeta.get("flags").getAsString().split("@@")) {
                         if (flag.equals("")) continue;
-                        System.out.println("Found flag " + flag);
                         meta.addItemFlags(ItemFlag.valueOf(flag.toUpperCase()));
 
                     }
