@@ -246,6 +246,7 @@ public class MachineSaver {
                     final String substring = page.substring(1);
                     if (substring.contains(";;")) {
                         for (final String itemSerialized : substring.split(";;")) {
+                            if (itemSerialized.isEmpty()) continue;
                             final JsonObject json = (JsonObject) parser.parse(itemSerialized);
                             final int slot = json.get("slot").getAsInt();
                             final ItemStack item = ItemStackUtils.deserializeItemStack(itemSerialized);

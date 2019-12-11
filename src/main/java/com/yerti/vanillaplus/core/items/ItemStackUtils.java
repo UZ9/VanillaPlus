@@ -5,13 +5,11 @@ import com.gmail.filoghost.holographicdisplays.util.ItemUtils;
 import com.google.gson.*;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Contains several {@link ItemStack} utilities for ease
@@ -121,6 +119,9 @@ public class ItemStackUtils {
         json.addProperty("data", item.getData().getData());
         json.addProperty("amount", item.getAmount());
         json.addProperty("durability", item.getDurability());
+
+
+
         if (item.getEnchantments().size() > 0) {
             final JsonObject enchantments = new JsonObject();
             for (final Map.Entry<Enchantment, Integer> entry : item.getEnchantments().entrySet()) {
@@ -140,6 +141,18 @@ public class ItemStackUtils {
             if (meta.hasLore()) {
                 itemmeta.add("lore", gson.toJsonTree(meta.getLore()));
             }
+
+            if (meta.getItemFlags().size() > 0) {
+                StringBuilder serializedFlags = new StringBuilder();
+
+                for (ItemFlag flag : meta.getItemFlags()) {
+                    serializedFlags.append(flag.toString()).append("@@");
+                }
+
+                itemmeta.addProperty("flags", serializedFlags.toString());
+            }
+
+
             json.add("itemmeta", itemmeta);
         }
         return json;
@@ -157,7 +170,7 @@ public class ItemStackUtils {
             if (json.has("enchantments")) {
                 final JsonObject enchantments = json.getAsJsonObject("enchantments");
                 for (final Map.Entry<String, JsonElement> entry : enchantments.entrySet()) {
-                    item.addUnsafeEnchantment(Enchantment.getByName((String)entry.getKey()), entry.getValue().getAsInt());
+                    item.addUnsafeEnchantment(Enchantment.getByName(entry.getKey()), entry.getValue().getAsInt());
                 }
             }
             if (json.has("itemmeta")) {
@@ -172,8 +185,23 @@ public class ItemStackUtils {
                     while (it.hasNext()) {
                         lore.add(it.next().getAsString());
                     }
-                    meta.setLore((List)lore);
+                    meta.setLore(lore);
                 }
+
+                System.out.println("checking flags");
+                if (itemmeta.has("flags")) {
+                    System.out.println("found flags");
+                    for (String flag : itemmeta.get("flags").getAsString().split("@@")) {
+                        if (flag.equals("")) continue;
+                        System.out.println("Found flag " + flag);
+                        meta.addItemFlags(ItemFlag.valueOf(flag.toUpperCase()));
+
+                    }
+                }
+
+
+
+
                 item.setItemMeta(meta);
             }
             return item;

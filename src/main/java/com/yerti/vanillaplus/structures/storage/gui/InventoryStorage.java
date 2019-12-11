@@ -172,6 +172,8 @@ public class InventoryStorage  {
             if (i < pagination.totalPages() - 1) newInventory.getInventory().setItem(51, rightArrow);
 
             for (ItemStack stack : pagination.getPage(i)) {
+                if (stack == null) continue;
+                if (stack.getType() == null) continue;
                 if (stack.getType() == Material.AIR) continue;
                 System.out.println("ADDING " + stack.getType());
                 newInventory.getInventory().addItem(stack);
