@@ -30,12 +30,6 @@ public class YertiPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CustomRecipeHandler(), this);
         getServer().getPluginManager().registerEvents(new EnchantmentHandler(), this);
 
-        new CombatEnchant("Flaming Keg", 40, 40, 40, e -> {
-           Entity victim = e.getEntity();
-           victim.getWorld().playEffect(victim.getLocation(), Effect.MOBSPAWNER_FLAMES, 1, 1);
-           victim.setFireTicks(100);
-           victim.getWorld().createExplosion(victim.getLocation(), 1, false);
-        });
     }
 
     protected void load() {
