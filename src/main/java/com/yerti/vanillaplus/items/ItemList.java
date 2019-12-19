@@ -32,6 +32,12 @@ public class ItemList {
             .enchant(Enchantment.ARROW_FIRE, 1)
             .addFlag(ItemFlag.HIDE_ENCHANTS);
 
+    //MACHINES
+    public static final ItemStack QUARRY_CONTROLLER = new CustomItemStack(Material.DISPENSER, 1)
+            .name("&eQuarry Controller")
+            .enchant(Enchantment.ARROW_FIRE, 1)
+            .addFlag(ItemFlag.HIDE_ENCHANTS);
+
 
 
 

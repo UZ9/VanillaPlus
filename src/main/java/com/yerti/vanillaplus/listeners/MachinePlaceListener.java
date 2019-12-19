@@ -5,6 +5,7 @@ import com.yerti.vanillaplus.events.StructurePlaceEvent;
 import com.yerti.vanillaplus.items.ItemList;
 import com.yerti.vanillaplus.structures.Structure;
 import com.yerti.vanillaplus.structures.generators.CoalGenerator;
+import com.yerti.vanillaplus.structures.machines.QuarryController;
 import com.yerti.vanillaplus.structures.storage.CraftingTerminal;
 import com.yerti.vanillaplus.utils.BlockUpdater;
 import org.bukkit.Bukkit;
@@ -35,6 +36,10 @@ public class MachinePlaceListener implements Listener {
         } else if (event.getItemInHand().getItemMeta().equals(ItemList.CRAFTING_TERMINAL.getItemMeta())) {
             Structure structure = new CraftingTerminal(event.getBlock().getLocation());
             Bukkit.getServer().getPluginManager().callEvent(new StructurePlaceEvent(event.getPlayer(),  structure));
+        } else if (event.getItemInHand().getItemMeta().equals(ItemList.QUARRY_CONTROLLER.getItemMeta())) {
+            Structure structure = new QuarryController(event.getBlock().getLocation());
+            Bukkit.getServer().getPluginManager().callEvent(new StructurePlaceEvent(event.getPlayer(), structure));
+
         }
 
 

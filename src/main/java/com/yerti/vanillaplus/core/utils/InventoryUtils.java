@@ -1,6 +1,7 @@
 package com.yerti.vanillaplus.core.utils;
 
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class InventoryUtils {
@@ -22,6 +23,28 @@ public class InventoryUtils {
             if (currentItemStack == null) {
                 freeSpace += itemStack.getMaxStackSize();
             //Item has same item meta
+            } else if (currentItemStack.isSimilar(itemStack)) {
+                freeSpace += itemStack.getMaxStackSize() - currentItemStack.getAmount();
+            }
+
+        }
+
+        if (freeSpace >= itemStack.getAmount()) return true;
+
+        return false;
+    }
+
+    public static boolean hasInventorySpace(Inventory inventory, ItemStack itemStack) {
+
+        int freeSpace = 0;
+
+        for (int i = 0; i < 9; i++) {
+            ItemStack currentItemStack = inventory.getItem(i);
+
+            //Itemstack is Material.AIR
+            if (currentItemStack == null) {
+                freeSpace += itemStack.getMaxStackSize();
+                //Item has same item meta
             } else if (currentItemStack.isSimilar(itemStack)) {
                 freeSpace += itemStack.getMaxStackSize() - currentItemStack.getAmount();
             }

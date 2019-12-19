@@ -30,6 +30,10 @@ public class Generator extends Structure {
 
     public Generator(Location loc, String type, int maxEnergy, int energy) {
         super(loc, type, maxEnergy, energy);
+
+        setHologram(HologramsAPI.createHologram(VanillaPlus.getInstance(), new Location(getLoc().getWorld(), getLoc().getX() + 0.5, getLoc().getY() + 2, getLoc().getZ() + 0.5)));
+        line = getHologram().appendTextLine(ChatColor.RED + "" + new DecimalFormat("##.#").format(getEnergy() / 1000.) + "/" + new DecimalFormat("##.#").format(getMaxEnergy() / 1000.) + "k VU");
+        BlockUpdater.machines.put(loc, this);
     }
 
     @Override

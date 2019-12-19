@@ -41,14 +41,10 @@ public class CraftingTerminal extends Structure {
 
     public CraftingTerminal(Location loc, String type, Integer maxEnergy, Integer energy) {
         super(loc, type, maxEnergy, energy);
-        System.out.println("crafting constructor 1");
 
         setHologram(HologramsAPI.createHologram(VanillaPlus.getInstance(), new Location(getLoc().getWorld(), getLoc().getX() + 0.5, getLoc().getY() + 2, getLoc().getZ() + 0.5)));
-        System.out.println("carfting constructor 2");
         line = getHologram().appendTextLine(ChatColor.RED + "" + new DecimalFormat("##.#").format(getEnergy() / 1000.) + "/" + new DecimalFormat("##.#").format(getMaxEnergy() / 1000.) + "k VU");
-        System.out.println("crafting constructor3");
         BlockUpdater.machines.put(loc, this);
-        System.out.println("constructor 4");
         if (VanillaPlus.getMachineSaver().getPanel(this) == null) System.out.println("oh shoot it's null");
         storage = new InventoryStorage(VanillaPlus.getMachineSaver().getPanel(this));
     }

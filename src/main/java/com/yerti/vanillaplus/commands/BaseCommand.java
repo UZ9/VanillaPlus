@@ -7,6 +7,8 @@ import com.yerti.vanillaplus.core.inventories.AnvilGUI;
 import com.yerti.vanillaplus.core.items.CustomItemStack;
 import com.yerti.vanillaplus.core.items.ItemMetaData;
 import com.yerti.vanillaplus.config.Messages;
+import com.yerti.vanillaplus.items.ItemList;
+import net.minecraft.server.v1_8_R3.Items;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -43,14 +45,7 @@ public class BaseCommand {
 
     @SubCommand(parent = "vanillaplus", name = "test", permission = "", usage = "/vanillaplus test", description = "test")
     public void test(CommandSender sender, Command command,  String[] args) {
-        new AnvilGUI.Builder()
-                .preventClose()
-                .onClose(player -> player.sendMessage("Success"))
-                .onComplete((player, text) -> AnvilGUI.Response.close())
-
-                .plugin(VanillaPlus.getInstance())
-                .text("Search Items")
-                .open((Player) sender);
+        ((Player) sender).getInventory().addItem(ItemList.QUARRY_CONTROLLER);
     }
 
 }
