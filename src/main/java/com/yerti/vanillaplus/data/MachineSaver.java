@@ -241,7 +241,7 @@ public class MachineSaver {
                 final String data = set.getString("data");
                 int i = 0;
                 for (final String page : data.split("];")) {
-                    CustomInventory nPage = new CustomInventory(new InventoryStorageHolder(), 54, "&cCrafting Terminal", new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
+                    CustomInventory nPage = new CustomInventory(new InventoryStorageHolder(), 54, "&cCrafting Terminal");
 
                     final String substring = page.substring(1);
                     if (substring.contains(";;")) {

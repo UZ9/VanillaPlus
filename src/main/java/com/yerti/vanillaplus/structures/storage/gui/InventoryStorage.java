@@ -99,8 +99,8 @@ public class InventoryStorage  {
         stacks.clear();
         System.out.println(pagination.totalPages());
         for (int i = 0; i < pagination.totalPages(); i++) {
-            CustomInventory newInventory = new CustomInventory(new InventoryStorageHolder(), 54, "&cCrafting Terminal", new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
-            newInventory.fill(45, 54, newInventory.getBackgroundItem());
+            CustomInventory newInventory = new CustomInventory(new InventoryStorageHolder(), 54, "&cCrafting Terminal");
+            newInventory.fill(45, 54, new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
 
 
 
@@ -160,8 +160,8 @@ public class InventoryStorage  {
         System.out.println(pagination.totalPages());
         for (int i = 0; i < pagination.totalPages(); i++) {
             System.out.println("yoink");
-            CustomInventory newInventory = new CustomInventory(new InventoryStorageHolder(), 54, "&cCrafting Terminal", new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
-            newInventory.fill(45, 54, newInventory.getBackgroundItem());
+            CustomInventory newInventory = new CustomInventory(new InventoryStorageHolder(), 54, "&cCrafting Terminal");
+            newInventory.fill(45, 54, new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15));
 
 
 
