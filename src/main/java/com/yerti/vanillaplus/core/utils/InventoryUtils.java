@@ -1,13 +1,15 @@
 package com.yerti.vanillaplus.core.utils;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class InventoryUtils {
 
-     /**
+    /**
      * Checks if the player can fit the ItemStack within their inventory.
+     *
      * @param player
      * @param itemStack
      * @return
@@ -22,7 +24,7 @@ public class InventoryUtils {
             //Itemstack is Material.AIR
             if (currentItemStack == null) {
                 freeSpace += itemStack.getMaxStackSize();
-            //Item has same item meta
+                //Item has same item meta
             } else if (currentItemStack.isSimilar(itemStack)) {
                 freeSpace += itemStack.getMaxStackSize() - currentItemStack.getAmount();
             }
@@ -36,6 +38,7 @@ public class InventoryUtils {
 
     /**
      * Checks if the inventory can fit the ItemStack within their inventory.
+     *
      * @param inventory
      * @param itemStack
      * @return
@@ -64,6 +67,7 @@ public class InventoryUtils {
 
     /**
      * Checks if the player have an amount of slots open
+     *
      * @param player
      * @param slots
      * @return
@@ -83,9 +87,21 @@ public class InventoryUtils {
         return freeSlots >= slots;
     }
 
+    /**
+     * Returns the amount of a material in a given inventory
+     * @param inventory
+     * @param material
+     * @return
+     */
+    public static int getItemCount(Inventory inventory, Material material) {
+        int amount = 0;
+        for (ItemStack stack : inventory.all(material).values()) {
+            amount += stack.getAmount();
 
+        }
 
-
+        return amount;
+    }
 
 
 }
