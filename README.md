@@ -6,5 +6,7 @@ VanillaPlus has been a modpack I've been working on for a little bit that involv
 
 # Features
 Coal Generator - Generates VoxelUnits (VU) to wirelessly power other structures using coal
+
 Quarry - Consumes VU in order to dig a region down to bedrock. 
+
 Crafting Terminal - A very similar structure to the AE2 crafting terminal
