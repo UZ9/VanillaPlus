@@ -1,12 +1,16 @@
 package com.yerti.vanillaplus.items;
 
 import com.yerti.vanillaplus.core.items.CustomItemStack;
+import com.yerti.vanillaplus.core.utils.SkullUtils;
 import org.bukkit.Material;
+import org.bukkit.block.Skull;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemList {
+
+    //TODO: (Maybe) rewrite this to be non static, although I'm not completely sure if I want to
 
     // COMPONENTS
     public static final ItemStack GENERATOR_CORE = new CustomItemStack(Material.FIREBALL, 1)
@@ -29,14 +33,12 @@ public class ItemList {
     // STORAGE
     public static final ItemStack CRAFTING_TERMINAL = new CustomItemStack(Material.IRON_BLOCK, 1)
             .name("&eCrafting Terminal")
-            .enchant(Enchantment.ARROW_FIRE, 1)
-            .addFlag(ItemFlag.HIDE_ENCHANTS);
+            .glow();
 
     //MACHINES
     public static final ItemStack QUARRY_CONTROLLER = new CustomItemStack(Material.DISPENSER, 1)
             .name("&eQuarry Controller")
-            .enchant(Enchantment.ARROW_FIRE, 1)
-            .addFlag(ItemFlag.HIDE_ENCHANTS);
+            .glow();
 
 
 

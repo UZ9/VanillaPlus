@@ -158,6 +158,13 @@ public class CustomItemStack extends ItemStack {
         return this;
     }
 
+    public CustomItemStack glow()
+    {
+        enchant(Enchantment.ARROW_FIRE, 1);
+        addFlag(ItemFlag.HIDE_ENCHANTS);
+        return this;
+    }
+
     /**
      * Adds an itemflag to the itemstack
      * @param flag
