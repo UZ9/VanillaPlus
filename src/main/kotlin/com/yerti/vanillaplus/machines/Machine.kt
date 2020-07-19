@@ -1,12 +1,14 @@
 package com.yerti.vanillaplus.machines
 
-import javax.xml.stream.Location
+import com.yerti.core.block.storage.SQLPersistentBlockStorage
+import com.yerti.vanillaplus.types.Persistent
+import com.yerti.vanillaplus.types.Tickable
+import org.bukkit.Location
+import org.bukkit.inventory.ItemStack
 
-abstract class Machine(private var location: Location) {
 
-    abstract fun save()
+abstract class Machine(var location: Location) : Persistent, Tickable {
 
-    fun getLocation() : Location {
-        return location
-    }
+    abstract fun getItem() : ItemStack
+
 }
