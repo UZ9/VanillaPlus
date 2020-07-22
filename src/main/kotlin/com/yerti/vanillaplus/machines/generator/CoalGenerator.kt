@@ -15,7 +15,7 @@ class CoalGenerator(location: Location) : Generator(location) {
 
     private lateinit var inventory : CustomInventory
 
-    fun create() {
+    override fun init() {
         inventory = CustomInventory(null, InventoryType.FURNACE, "&6Coal Generator")
     }
 

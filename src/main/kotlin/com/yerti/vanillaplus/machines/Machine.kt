@@ -9,6 +9,8 @@ import org.bukkit.inventory.ItemStack
 
 abstract class Machine(var location: Location) : Persistent, Tickable {
 
+    abstract fun init()
+
     abstract fun getItem() : ItemStack
 
 }
