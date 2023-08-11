@@ -7,6 +7,8 @@ import com.yerti.vanillaplus.VanillaPlus
 import com.yerti.vanillaplus.items.VPItems
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.Material
+import org.bukkit.block.Block
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
@@ -25,6 +27,8 @@ class CoalGenerator(location: Location) : Generator(location) {
 
     override fun saveGen(persistentStorage: SQLPersistentBlockStorage) {
         persistentStorage.storeValue(location, "inventory", InventoryUtils.serializeInventory(inventory.inventory))
+        val block : Block;
+        block.blockd
     }
 
     override fun tick() {

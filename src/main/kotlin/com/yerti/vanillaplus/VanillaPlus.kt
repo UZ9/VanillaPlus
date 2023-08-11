@@ -14,7 +14,7 @@ class VanillaPlus : YertiPlugin() {
     }
 
     override fun onPluginEnable() {
-        commandClass = VPCommands::class.java
+        registerCommandClass(VPCommands::class.java)
 
         val sqlManager = SQLiteManager(this, SQLiteInfo("db", "user", "pass"), false)
         val data = SQLPersistentBlockStorage(sqlManager)
